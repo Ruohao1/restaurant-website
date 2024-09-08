@@ -2,5 +2,13 @@
     "title": "Hi there!",
     "to-second-page": "To second page",
     "second-title": "Hi second page!",
-    "back-to-home": "Back to first page"
+    "back-to-home": "Back to first page",
+
+    "menu-title": "Menu",
+    "menu": "Here's the menu",
+
+    "browse-title": "Browse",
+    "links-title": "Links",
+    "contacts-title": "Contacts",
+    "address-title": "Address"
   }

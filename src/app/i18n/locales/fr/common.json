@@ -1,6 +1,15 @@
 {
     "title": "Salut!",
-    "to-second-page": "Vers la deuxième page",
+    "to-second-page": "À la deuxième page",
     "second-title": "Salut deuxième page!",
-    "back-to-home": "Retour à la première page"
-}
+    "back-to-home": "Retour à la première page",
+
+    "menu-title": "Menu",
+    "menu": "Voici le menu",
+
+    "browse-title": "Parcourir",
+    "links-title": "Liens",
+    "contacts-title": "Contacts",
+    "address-title": "Adresse",
+    "legal-mentions": "Mentions légales"
+} 
