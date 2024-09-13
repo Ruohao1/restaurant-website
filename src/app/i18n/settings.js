@@ -1,23 +1,20 @@
-export const fallbackLng = 'fr'; // Fallback language if the user's language is not supported
-export const languages = [fallbackLng, 'en', 'zh']; // Supported languages
-export const defaultNS = 'common'; // Default namespace for translations
-export const cookieName = 'i18next'; // Cookie name to store the language
+export const fallbackLng = 'fr'
+export const languages = [fallbackLng, 'en', 'zh']
+export const defaultNS = 'translation'
+export const cookieName = 'i18next'
 
-// Function to detect the user's browser language
-export function getLocaleLanguage() {
-  // Get the user's preferred language from the browser or use fallbackLng if not supported
-  const browserLng = typeof navigator !== 'undefined' ? navigator.language.split('-')[0] : fallbackLng;
-  return languages.includes(browserLng) ? browserLng : fallbackLng;
-}
-
-export function getOptions(lng = getLocaleLanguage(), ns = defaultNS) {
+export function getOptions (lng = fallbackLng, ns = defaultNS) {
   return {
     // debug: true,
     supportedLngs: languages,
+    // preload: languages,
     fallbackLng,
-    lng, // Set to the detected language or fallback
+    lng,
     fallbackNS: defaultNS,
     defaultNS,
     ns,
-  };
+    // backend: {
+    //   projectId: '01b2e5e8-6243-47d1-b36f-963dbb8bcae3'
+    // }
+  }
 }

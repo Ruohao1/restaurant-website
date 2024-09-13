@@ -33,7 +33,7 @@ const Footer: React.FC<FooterProps> = async ({ lng }) => {
       <div>
         <p>
           Site officiel - Tous droits réservés - Conception & réalisation :
-          Cédric LIN
+          <a href="https://portfolio-mu-murex-26.vercel.app/"> Cédric LIN</a>
         </p>
       </div>
     </footer>

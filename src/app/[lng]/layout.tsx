@@ -1,14 +1,29 @@
 import "@/app/globals.css";
-import type { Metadata } from "next";
 import React from "react";
 import { dir } from "i18next";
 
-import { languages } from "../i18n/settings";
+import { fallbackLng, languages } from "@/app/i18n/settings";
 
-export const metadata: Metadata = {
-  title: "Restaurant",
-  description: "Restaurant website template",
-};
+import { useTranslation } from "@/app/i18n";
+
+interface generateMetadataProps {
+  params: {
+    lng: string;
+  };
+}
+
+export async function generateMetadata({
+  params: { lng },
+}: generateMetadataProps) {
+  if (languages.indexOf(lng) < 0) lng = fallbackLng;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const { t } = await useTranslation(lng);
+  return {
+    title: t("title"),
+    content:
+      "A playground to explore new Next.js 13/14 app directory features such as nested layouts, instant loading states, streaming, and component level data fetching.",
+  };
+}
 
 export async function generateStaticParams() {
   return languages.map((lng) => ({ lng }));
