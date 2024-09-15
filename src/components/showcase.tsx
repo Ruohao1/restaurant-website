@@ -74,7 +74,7 @@ const Showcase: React.FC = async () => {
           })}
         </section>
         <section
-          className="autoscroll h-full flex items-center"
+          className="autoscroll-end h-full flex items-center"
           style={{ "--speed": `${speed}ms` } as React.CSSProperties}
         >
           {images.map((image) => {
