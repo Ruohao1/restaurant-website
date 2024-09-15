@@ -15,7 +15,6 @@ const Hero: React.FC<HeroProps> = async ({ lng }) => {
           src="/hero.jpg"
           alt="hero"
           fill
-          loading="lazy"
           className="blur-0 object-cover"
         />
       </div>
