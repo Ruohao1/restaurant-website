@@ -34,12 +34,11 @@ import "@/assets/styles/autoscrolling.css";
 
 const Showcase: React.FC = async () => {
   const images = await getStaticProps();
-  const speed = 50000;
+  const speed = 60000;
 
   return (
     <div className="flex items-center h-[16rem]">
       <div className="flex h-full overflow-hidden">
-        {/* Auto-scrolling section */}
         <section
           className="autoscroll h-full flex items-center"
           style={{ "--speed": `${speed}ms` } as React.CSSProperties}
@@ -68,15 +67,12 @@ const Showcase: React.FC = async () => {
                   style={{
                     objectFit: "contain",
                   }}
+                  loading="lazy"
                 />
               </div>
             );
           })}
-        </section>
-        <section
-          className="autoscroll-end h-full flex items-center"
-          style={{ "--speed": `${speed}ms` } as React.CSSProperties}
-        >
+
           {images.map((image) => {
             // Calculate dynamic width based on aspect ratio
             const calculatedWidth =
@@ -101,6 +97,7 @@ const Showcase: React.FC = async () => {
                   style={{
                     objectFit: "contain",
                   }}
+                  loading="lazy"
                 />
               </div>
             );
