@@ -5,9 +5,7 @@ interface languageSwitcherProps {
   lng: string; // language code, e.g., 'en', 'fr'
 }
 
-export const LanguageSwitcher: React.FC<languageSwitcherProps> = async ({
-  lng,
-}) => {
+export const LanguageSwitcher: React.FC<languageSwitcherProps> = ({ lng }) => {
   return (
     <div>
       {languages

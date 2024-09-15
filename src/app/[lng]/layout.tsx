@@ -1,4 +1,4 @@
-import "@/app/globals.css";
+import "@/assets/styles/globals.css";
 import React from "react";
 import { dir } from "i18next";
 

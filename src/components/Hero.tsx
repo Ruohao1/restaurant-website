@@ -1,0 +1,27 @@
+import { useTranslation } from "@/app/i18n";
+import Image from "next/image";
+import Logo from "./logo";
+
+interface HeroProps {
+  lng: string;
+}
+const Hero: React.FC<HeroProps> = async ({ lng }) => {
+  const { t } = await useTranslation(lng);
+
+  return (
+    <div className="w-screen h-screen flex justify-center items-center">
+      <Image
+        src="/hero.jpg"
+        alt="hero"
+        fill
+        loading="lazy"
+        className="blur-0 object-cover"
+      />
+      <div>
+        <Logo />
+      </div>
+    </div>
+  );
+};
+
+export default Hero;

@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer/footer";
 import Header from "@/components/Header/header";
+import Hero from "@/components/Hero";
 import Map from "@/components/map";
 import Showcase from "@/components/showcase";
 
@@ -13,10 +14,11 @@ interface PageProps {
 const Page: React.FC<PageProps> = ({ params: { lng } }) => {
   return (
     <>
-      <Header lng={lng} />
+      <Hero lng={lng} />
       <Showcase />
       <Map />
       <Footer lng={lng} />
+      <Header lng={lng} />
     </>
   );
 };
