@@ -23,7 +23,7 @@ CREATE TABLE menu (
 menu_id INTEGER PRIMARY KEY NOT NULL UNIQUE,
 category_id INTEGER NOT NULL,
 menu_code TEXT NULL UNIQUE,
-menu_name INTEGER NOT NULL,
+menu_name TEXT NOT NULL,
 menu_description TEXT NULL,
 menu_price MONEY NOT NULL,
 menu_image INTEGER NULL);
@@ -46,6 +46,38 @@ ALTER TABLE menu_food ADD CONSTRAINT menu_food_menu_id_menu_menu_id FOREIGN KEY 
 ALTER TABLE menu_food ADD CONSTRAINT menu_food_food_id_food_food_id FOREIGN KEY (food_id) REFERENCES food(food_id);
 ALTER TABLE menu_food ADD CONSTRAINT menu_food_type_id_food_types_type_id FOREIGN KEY (food_type_id) REFERENCES food_types(type_id);
 
+ALTER TABLE public.food_types ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.menu_categories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.food ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.menu ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.menu_food ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow read access to all users"
+ON public.food_types
+FOR SELECT
+USING (true);
+
+CREATE POLICY "Allow read access to all users"
+ON public.menu_categories
+FOR SELECT
+USING (true);
+
+CREATE POLICY "Allow read access to all users"
+ON public.food
+FOR SELECT
+USING (true);
+
+CREATE POLICY "Allow read access to all users"
+ON public.menu
+FOR SELECT
+USING (true);
+
+CREATE POLICY "Allow read access to all users"
+ON public.menu_food
+FOR SELECT
+USING (true);
+
+
 INSERT INTO food_types (type_id, type_title, type_code, serving_quantity) VALUES
 (1, 'Starter', 'E', 1),
 (2, 'Maki', 'MA', 6),
@@ -63,7 +95,7 @@ INSERT INTO food_types (type_id, type_title, type_code, serving_quantity) VALUES
 (14, 'Beer', NULL, 1),
 (15, 'Wine', NULL, 1),
 (16, 'Plats chauds', 'P', 1),
-(16, 'Salade Yamayoshi', 'E', 1);
+(17, 'Salade Yamayoshi', 'E', 1);
 
 INSERT INTO menu_categories (category_id, category_title, category_letter) VALUES
 (1, 'À la carte', NULL),
@@ -192,7 +224,7 @@ INSERT INTO food (food_id, type_id, food_code, food_name, food_description, serv
 
 (99, 15, NULL, 'Côtes de provences', 'rosé, 37.5cl', 1, 7, NULL),
 (100, 15, NULL, 'Muscadet', 'blanc, 37.5cl', 1, 8, NULL),
-(101, 15, NULL, 'Côtes du Rhône', 'rouge, 37.5cl', 1, 8, NULL);
+(101, 15, NULL, 'Côtes du Rhône', 'rouge, 37.5cl', 1, 8, NULL),
 
 (102, 16, 'P1', 'Ramen', 'nouilles japonaises au boeuf, algue et légumes', 1, 9, NULL),
 (103, 16, 'P2', 'Bobun', 'vermicelle de riz, boeuf, nems, salade variée', 1, 9, NULL),
@@ -206,8 +238,8 @@ INSERT INTO food (food_id, type_id, food_code, food_name, food_description, serv
 (111, 16, 'P10', 'Dame de saumon avec du riz', NULL, 1, 12, NULL),
 (112, 16, 'P11', 'Nouilles sautées au fromage', NULL, 1, 8, NULL),
 
-(113, 17, 'E15', 'Edamame', "fève d'haricot", 1, 4.5, NULL),
-(114, 17, 'E16', "Salade d'algue piquante", NULL, 1, 4.5, NULL),
+(113, 17, 'E15', 'Edamame', 'fève d''haricot', 1, 4.5, NULL),
+(114, 17, 'E16', 'Salade d''algue piquante', NULL, 1, 4.5, NULL),
 (115, 17, 'E17', 'Salade de saumon', NULL, 1, 7, NULL),
 (116, 17, 'E18', 'Salade de crevettes', NULL, 1, 8, NULL),
 (117, 17, 'E19', 'Salade de camembert', NULL, 1, 6, NULL),
@@ -219,10 +251,10 @@ INSERT INTO food (food_id, type_id, food_code, food_name, food_description, serv
 (122, 8, NULL, 'Maki printemps fromage', NULL, 8, 6.5, NULL),
 (123, 3, NULL, 'California futomaki', NULL, 8, 7.5, NULL),
 (124, 6, NULL, 'Egg roll fromage', NULL, 8, 7, NULL),
-(125, 9, NULL, 'Maki neige avocat', NULL, 8, 6, NULL);
+(125, 9, NULL, 'Maki neige avocat', NULL, 8, 6, NULL),
 (126, 3, NULL, 'California thon cuit', NULL, 8, 5.5, NULL),
 (127, 8, NULL, 'Maki printemps avocat fromage', NULL, 8, 6.5, NULL),
-(128, 1, NULL, 'Beignet de crevettes', NULL, 1, 6.5, NULL)
+(128, 1, NULL, 'Beignet de crevettes', NULL, 1, 6.5, NULL);
 
 INSERT INTO menu (menu_id, category_id, menu_code, menu_name, menu_description, menu_price, menu_image) VALUES
 (1, 1, 'E1', 'Riz nature', NULL, 2, NULL),
@@ -353,12 +385,12 @@ INSERT INTO menu (menu_id, category_id, menu_code, menu_name, menu_description, 
 (111, 1, 'P10', 'Dame de saumon avec du riz', NULL, 12, NULL),
 (112, 1, 'P11', 'Nouilles sautées au fromage', NULL, 8, NULL),
 
-(113, 1, 'E15', 'Edamame', "fève d'haricot", 4.5, NULL),
-(114, 1, 'E16', "Salade d'algue piquante", NULL, 4.5, NULL),
+(113, 1, 'E15', 'Edamame', 'fève d''haricot', 4.5, NULL),
+(114, 1, 'E16', 'Salade d''algue piquante', NULL, 4.5, NULL),
 (115, 1, 'E17', 'Salade de saumon', NULL, 7, NULL),
 (116, 1, 'E18', 'Salade de crevettes', NULL, 8, NULL),
 (117, 1, 'E19', 'Salade de camembert', NULL, 6, NULL),
-(118, 1, 'E20', 'Capaccio de saumon', '10 pièces', 9.5, NULL);
+(118, 1, 'E20', 'Capaccio de saumon', '10 pièces', 9.5, NULL),
 
 (119, 2, 'A1', 'Menu A1', NULL, 13, NULL),
 (120, 2, 'A2', 'Menu A2', NULL, 14, NULL),
@@ -415,17 +447,17 @@ INSERT INTO menu (menu_id, category_id, menu_code, menu_name, menu_description, 
 (166, 7, 'S18', 'Menu S18', NULL, 19, NULL),
 (167, 7, 'S19', 'Menu S19', NULL, 15, NULL),
 
-(168, 8, 'BT1', NULL, NULL, 18, NULL),
-(169, 8, 'BT2', NULL, NULL, 19, NULL),
-(170, 8, 'BT3', NULL, NULL, 20, NULL),
+(168, 8, 'BT1', 'Menu BT1', NULL, 18, NULL),
+(169, 8, 'BT2', 'Menu BT2', NULL, 19, NULL),
+(170, 8, 'BT3', 'Menu BT3', NULL, 20, NULL),
 
-(171, 9, 'F1', NULL, 'Boissons au choix: jus de lychee, coca cola ; Dessert au choix : lychees, nougat ou une boule de glace', 8.9, NULL)
-(172, 9, 'F2', NULL, 'Boissons au choix: jus de lychee, coca cola ; Dessert au choix : lychees, nougat ou une boule de glace', 8.9, NULL)
+(171, 9, 'F1', 'Menu F1', 'Boissons au choix: jus de lychee, coca cola ; Dessert au choix : lychees, nougat ou une boule de glace', 8.9, NULL),
+(172, 9, 'F2', 'Menu F1', 'Boissons au choix: jus de lychee, coca cola ; Dessert au choix : lychees, nougat ou une boule de glace', 8.9, NULL),
 
-(173, 10, NULL, 'Menu valentin', "pour 2 pers.", 39.90, NULL),
-(174, 10, NULL, 'Menu yamayoshi', "pour 2-3 pers.", 55, NULL),
-(175, 10, NULL, 'Menu royal', "pour 4-5 pers.", 72, NULL),
-(176, 10, NULL, 'Menu royal+', "pour 4-5 pers.", 82, NULL);
+(173, 10, NULL, 'Menu valentin', 'pour 2 pers.', 39.90, NULL),
+(174, 10, NULL, 'Menu yamayoshi', 'pour 2-3 pers.', 55, NULL),
+(175, 10, NULL, 'Menu royal', 'pour 4-5 pers.', 72, NULL),
+(176, 10, NULL, 'Menu royal+', 'pour 4-5 pers.', 82, NULL);
 
 
 INSERT INTO menu_food (menu_id, food_id, food_type_id, quantity) VALUES
@@ -642,7 +674,7 @@ INSERT INTO menu_food (menu_id, food_id, food_type_id, quantity) VALUES
 (130, 1, NULL, 1),
 (130, 61, NULL, 8),
 (130, 69, NULL, 2),
-(130, 84, NULL, 5);
+(130, 84, NULL, 5),
 
 (131, 3, NULL, 1),
 (131, 2, NULL, 1),
