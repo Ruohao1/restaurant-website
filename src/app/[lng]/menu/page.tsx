@@ -1,4 +1,5 @@
 import { useTranslation } from "@/app/i18n";
+import { pluralize } from "@/utils/string";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 interface MenuPageProps {
@@ -86,10 +87,15 @@ const MenuPage: React.FC<MenuPageProps> = async ({ params: { lng } }) => {
 
                         // Safely accessing food_name and food_types?.type_title
                         const foodName =
-                          typeof menuFood.food?.food_name === "string"
-                            ? menuFood.food.food_name
-                            : t(`${menuFood.food_types?.type_title}`);
-
+                          quantity === 1
+                            ? typeof menuFood.food?.food_name === "string"
+                              ? menuFood.food.food_name
+                              : t(`${menuFood.food_types?.type_title}`)
+                            : typeof menuFood.food?.food_name === "string"
+                            ? pluralize(menuFood.food.food_name)
+                            : pluralize(
+                                t(`${menuFood.food_types?.type_title}`)
+                              );
                         return `${quantity} ${foodName.toLowerCase()}`;
                       })
                       .join(", ")}
