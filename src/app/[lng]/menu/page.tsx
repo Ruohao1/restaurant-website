@@ -1,7 +1,6 @@
 import { useTranslation } from "@/app/i18n";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
-import { Tables } from "@/utils/supabase/database.types";
 interface MenuPageProps {
   params: {
     lng: string;
@@ -11,27 +10,6 @@ interface MenuPageProps {
 const getMenusByCategory = async () => {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-
-  // Query to fetch menus with their associated food
-  // const { data, error } = await supabase.from("menu").select(`
-  //   menu_id,
-  //   menu_name,
-  //   menu_description,
-  //   menu_price,
-  //   menu_food (
-  //     quantity,
-  //     food (
-  //       food_id,
-  //       food_name,
-  //       food_description,
-  //       food_price,
-  //       food_image,
-  //       food_types (
-  //         type_title
-  //       )
-  //     )
-  //   )
-  // `);
 
   const { data, error } = await supabase
     .from("menu_categories")
