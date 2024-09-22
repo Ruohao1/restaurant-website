@@ -1,6 +1,6 @@
 import Footer from "@/components/Footer/footer";
 import Header from "@/components/Header/header";
-// import Hero from "@/components/Hero";
+import Hero from "@/components/Hero";
 import Map from "@/components/map";
 import Showcase from "@/components/showcase";
 
@@ -15,7 +15,7 @@ const Page: React.FC<PageProps> = ({ params: { lng } }) => {
   return (
     <>
       {/* <div className="h-screen"></div> */}
-      {/* <Hero lng={lng} /> */}
+      <Hero lng={lng} />
       <Showcase />
       <Map />
       <Footer lng={lng} />

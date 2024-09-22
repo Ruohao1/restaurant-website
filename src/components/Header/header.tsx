@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Logo from "../logo";
 import Burger from "./burger";
 import NavBar from "./navBar";
-import config from "@/constants/config";
 
 interface HeaderProps {
   lng: string;
@@ -12,15 +11,41 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ lng }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const [position, setPosition] = useState(window.scrollY);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const moving = window.scrollY;
+
+      setVisible(position > moving);
+      setPosition(moving);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  });
+
   return (
-    <header className="fixed top-0 z-99">
+    <header
+      className={`fixed top-0 z-99 ${
+        visible ? "-translate-y-full" : "translate-y-0"
+      } transition-all duration-300 ease-in
+      `}
+    >
       <div
         className={`${
-          isOpen ? "hidden" : "flex"
-        } relative w-screen h-12 z-99 bg-gray-500`}
-      ></div>
+          isOpen ? "hidden" : "flex justify-center"
+        } relative w-screen h-12 z-99 bg-gray-500 transition-all duration-300 ease-in-out`}
+      >
+        <div className="flex justify-center">
+          <Logo />
+        </div>
+      </div>
 
-      <NavBar isOpen={isOpen} setIsOpen={setIsOpen} lng={lng} />
+      <NavBar isOpen={isOpen} lng={lng} />
       <Burger isOpen={isOpen} setIsOpen={setIsOpen} />
     </header>
   );
