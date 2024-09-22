@@ -1,21 +1,32 @@
-import { useTranslation } from "@/app/i18n";
-import Link from "next/link";
+"use client";
+
+import { Dispatch, SetStateAction, useState } from "react";
+import Logo from "../logo";
+import { useTranslation } from "@/app/i18n/client";
 
 interface NavBarProps {
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
   lng: string;
 }
 
-const NavBar: React.FC<NavBarProps> = async ({ lng }) => {
-  const { t } = await useTranslation(lng);
+const Navbar: React.FC<NavBarProps> = ({ isOpen, setIsOpen, lng }) => {
+  const { t } = useTranslation();
+
   return (
-    <nav>
-      <ul>
-        <li>
-          <Link href={`${lng}/menu`}>{t("menu-title")}</Link>
-        </li>
-      </ul>
+    <nav
+      className={`${
+        isOpen ? "translate-x-0" : "-translate-x-full"
+      } flex flex-col justify-between w-96 h-screen bg-blue-500 transition-transform duration-300 ease-in-out`}
+    >
+      <div className="flex justify-center">
+        <Logo></Logo>
+      </div>
+      <div className="flex flex-col">
+        <p>oui</p>
+      </div>
     </nav>
   );
 };
 
-export default NavBar;
+export default Navbar;

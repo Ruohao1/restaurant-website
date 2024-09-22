@@ -11,7 +11,7 @@ const Footer: React.FC<FooterProps> = async ({ lng }) => {
 
   return (
     <footer className="flex flex-col w-full items-center justify-center">
-      <div className="flex w-full justify-around">
+      <div className="flex flex-col justify-center items-center">
         <div>
           <Logo />
         </div>

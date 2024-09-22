@@ -37,7 +37,7 @@ const Showcase: React.FC = async () => {
   const speed = 60000;
 
   return (
-    <div className="flex items-center h-[16rem]">
+    <div className="flex items-center h-[16rem] z-0">
       <div className="flex h-full overflow-hidden">
         <section
           className="autoscroll h-full flex items-center"
@@ -57,6 +57,7 @@ const Showcase: React.FC = async () => {
                   height: `${showcaseHeight}rem`,
                   margin: "0 1rem",
                   position: "relative",
+                  zIndex: 0,
                 }}
               >
                 <Image
@@ -87,6 +88,7 @@ const Showcase: React.FC = async () => {
                   height: `${showcaseHeight}rem`,
                   margin: "0 1rem",
                   position: "relative",
+                  zIndex: 0,
                 }}
               >
                 <Image

@@ -9,7 +9,7 @@ const Hero: React.FC<HeroProps> = async ({ lng }) => {
   const { t } = await useTranslation(lng);
 
   return (
-    <div className="w-screen h-screen">
+    <div className="w-screen h-screen z-0">
       <div className="relative w-full h-full flex justify-center items-center">
         <Image
           src="/hero.jpg"

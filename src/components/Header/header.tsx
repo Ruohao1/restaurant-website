@@ -1,5 +1,8 @@
-import { LanguageSwitcher } from "../languageSwitcher";
+"use client";
+
+import { useState } from "react";
 import Logo from "../logo";
+import Burger from "./burger";
 import NavBar from "./navBar";
 import config from "@/constants/config";
 
@@ -8,19 +11,17 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ lng }) => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <header className="flex flex-col fixed top-0 z-99 w-screen ">
-      <div className="flex justify-between">
-        <p>{config.phone}</p>
-        <p>{config.address}</p>
-      </div>
-      <div className="flex justify-between">
-        <Logo />
-        <div className="flex">
-          <LanguageSwitcher lng={lng} />
-          <NavBar lng={lng} />
-        </div>
-      </div>
+    <header className="fixed top-0 z-99">
+      <div
+        className={`${
+          isOpen ? "hidden" : "flex"
+        } relative w-screen h-12 z-99 bg-gray-500`}
+      ></div>
+
+      <NavBar isOpen={isOpen} setIsOpen={setIsOpen} lng={lng} />
+      <Burger isOpen={isOpen} setIsOpen={setIsOpen} />
     </header>
   );
 };
