@@ -17,10 +17,8 @@ const Burger: React.FC<BurgerProps> = ({ isOpen, setIsOpen }) => {
         }`}
       />
       <div
-        className={`w-8 h-1 my-${
-          isOpen ? "1" : "[0.375rem]"
-        } bg-black rounded transition-all duration-300 ease-in-out ${
-          isOpen ? "opacity-0" : "opacity-1"
+        className={`w-8 h-1 bg-black rounded transition-all duration-300 ease-in-out ${
+          isOpen ? "my-1 opacity-0" : "my-[0.375rem] opacity-1"
         }`}
       />
       <div

@@ -12,7 +12,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ lng }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const [position, setPosition] = useState(window.scrollY);
+  const [position, setPosition] = useState(0);
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const Header: React.FC<HeaderProps> = ({ lng }) => {
   return (
     <header
       className={`fixed top-0 z-99 ${
-        visible ? "-translate-y-full" : "translate-y-0"
+        visible ? "translate-y-0" : "-translate-y-full"
       } transition-all duration-300 ease-in
       `}
     >
