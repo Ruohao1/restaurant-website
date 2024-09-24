@@ -31,6 +31,9 @@ const Navbar: React.FC<NavBarProps> = ({ isOpen, lng }) => {
               <li>
                 <a href={`${lng}/menu`}>{t("menus")}</a>
               </li>
+              <li>
+                <a href={`${lng}/reservation`}>{t("reservation")}</a>
+              </li>
             </ul>
           </div>
         </div>
