@@ -1,5 +1,5 @@
-import Footer from "@/components/Footer/footer";
-import Header from "@/components/Header/header";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Map from "@/components/map";
 import OpeningHours from "@/components/openingHours";

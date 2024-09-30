@@ -18,7 +18,7 @@ const NavBar: React.FC<NavBarProps> = ({ isOpen, lng }) => {
         isOpen
           ? "translate-x-0"
           : "-translate-x-full lg:translate-x-0 lg:flex lg:flex-row"
-      } fixed lg:static lg:flex lg:items-center top-0 left-0 lg:left-auto lg:w-auto h-screen lg:h-auto w-64 lg:w-auto bg-gray-100 lg:bg-transparent transition-transform duration-300 ease-in-out z-40 lg:space-x-8`}
+      } fixed h-screen lg:static lg:flex lg:items-center top-0 left-0 lg:left-auto lg:w-auto h-screen lg:h-auto w-3/4 lg:w-auto bg-gray-100 lg:bg-transparent transition-transform duration-300 ease-in-out z-40 lg:space-x-8`}
     >
       <div className="container p-5 lg:p-0 lg:flex lg:items-center lg:justify-between">
         {/* Logo for small screens */}

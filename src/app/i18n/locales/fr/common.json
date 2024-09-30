@@ -1,5 +1,5 @@
 {
-    "title": "Salut!",
+    "title": "Yamayoshi",
     "to-second-page": "À la deuxième page",
     "second-title": "Salut deuxième page!",
     "back-to-home": "Retour à la première page",
@@ -11,5 +11,13 @@
     "links-title": "Liens",
     "contacts-title": "Contacts",
     "address-title": "Adresse",
-    "legal-mentions": "Mentions légales"
+    "legal-mentions": "Mentions légales",
+
+    "test": "Ceci est un test",
+    "hero": {
+        "title": "Bienvenue chez Yamayoshi",
+        "description": "Savourez des créations de sushi raffinées, préparées avec passion.",
+        "cta": "Voir le Menu"
+    }
+
 } 

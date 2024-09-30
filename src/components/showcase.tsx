@@ -37,10 +37,10 @@ const Showcase: React.FC = async () => {
   const speed = 60000;
 
   return (
-    <div className="flex items-center h-[16rem] z-0">
-      <div className="flex h-full overflow-hidden">
+    <div className="relative h-[16rem] z-0 overflow-hidden bg-gray-100">
+      <div className="absolute inset-0 flex items-center overflow-hidden">
         <section
-          className="autoscroll h-full flex items-center"
+          className="autoscroll flex items-center space-x-6"
           style={{ "--speed": `${speed}ms` } as React.CSSProperties}
         >
           {images.map((image) => {
@@ -52,11 +52,10 @@ const Showcase: React.FC = async () => {
             return (
               <div
                 key={image.fileName}
+                className="relative"
                 style={{
                   width: `${calculatedWidth}rem`,
                   height: `${showcaseHeight}rem`,
-                  margin: "0 1rem",
-                  position: "relative",
                   zIndex: 0,
                 }}
               >
@@ -66,7 +65,7 @@ const Showcase: React.FC = async () => {
                   fill
                   sizes={`${calculatedWidth}rem`}
                   style={{
-                    objectFit: "contain",
+                    objectFit: "cover",
                   }}
                   loading="lazy"
                 />
@@ -82,12 +81,11 @@ const Showcase: React.FC = async () => {
 
             return (
               <div
-                key={image.fileName}
+                key={`${image.fileName}-duplicate`}
+                className="relative"
                 style={{
                   width: `${calculatedWidth}rem`,
                   height: `${showcaseHeight}rem`,
-                  margin: "0 1rem",
-                  position: "relative",
                   zIndex: 0,
                 }}
               >
@@ -97,7 +95,7 @@ const Showcase: React.FC = async () => {
                   fill
                   sizes={`${calculatedWidth}rem`}
                   style={{
-                    objectFit: "contain",
+                    objectFit: "cover",
                   }}
                   loading="lazy"
                 />
