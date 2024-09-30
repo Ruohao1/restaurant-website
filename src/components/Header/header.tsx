@@ -12,7 +12,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ lng }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState(0);
-  const [visible, setVisible] = useState(true);
+  // const [visible, setVisible] = useState(true);
   const [isTop, setIsTop] = useState(true); // Track if header is at the top of the hero
   const [heroHeight, setHeroHeight] = useState(0); // Store hero section height
 
@@ -31,7 +31,7 @@ const Header: React.FC<HeaderProps> = ({ lng }) => {
 
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
-      setVisible(position > scrollPosition); // Detect scroll direction (up or down)
+      // setVisible(position > scrollPosition); // Detect scroll direction (up or down)
       setPosition(scrollPosition);
 
       // Dynamically check if we're within the hero section or beyond
