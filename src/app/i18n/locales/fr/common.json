@@ -18,6 +18,19 @@
         "title": "Bienvenue chez Yamayoshi",
         "description": "Savourez des créations de sushi raffinées, préparées avec passion.",
         "cta": "Voir le Menu"
-    }
+    },
 
+    "testimonials": {
+        "title": "Nos clients sont ravis",
+        "description": "Découvrez les avis de nos clients satisfaits",
+        "reviews" : "avis"
+    },
+    "services": {
+    "title": "Nos Services",
+    "takeaway": "Plats à emporter",
+    "takeawayDiscount": "Réduction de 10%",
+    "takeawayCondition": "à partir de 40 euros d'achat",
+    "delivery": "Livraison",
+    "reservations": "Réservations"
+  }
 } 

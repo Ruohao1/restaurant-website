@@ -1,14 +1,22 @@
 {
-    "title": "Hi there!",
-    "to-second-page": "To second page",
-    "second-title": "Hi second page!",
-    "back-to-home": "Back to first page",
+  "title": "Yamayoshi",
+  "to-second-page": "To the second page",
+  "second-title": "Hello second page!",
+  "back-to-home": "Back to the first page",
 
-    "menu-title": "Menu",
-    "menu": "Here's the menu",
+  "menu-title": "Menu",
+  "menu": "Here is the menu",
 
-    "browse-title": "Browse",
-    "links-title": "Links",
-    "contacts-title": "Contacts",
-    "address-title": "Address"
+  "browse-title": "Browse",
+  "links-title": "Links",
+  "contacts-title": "Contacts",
+  "address-title": "Address",
+  "legal-mentions": "Legal notices",
+
+  "test": "This is a test",
+  "hero": {
+      "title": "Welcome to Yamayoshi",
+      "description": "Savor refined sushi creations, prepared with passion.",
+      "cta": "See the Menu"
   }
+}

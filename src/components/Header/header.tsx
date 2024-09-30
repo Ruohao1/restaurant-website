@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Logo from "../logo";
 import Burger from "./burger";
 import NavBar from "./navBar";
+import { usePathname } from "next/navigation";
 
 interface HeaderProps {
   lng: string;
@@ -13,7 +14,10 @@ const Header: React.FC<HeaderProps> = ({ lng }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState(0);
   // const [visible, setVisible] = useState(true);
-  const [isTop, setIsTop] = useState(true); // Track if header is at the top of the hero
+  const isHomePage = usePathname() === `/${lng}`;
+
+  console.log(isHomePage);
+  const [isTop, setIsTop] = useState(isHomePage); // Track if header is at the top of the hero
   const [heroHeight, setHeroHeight] = useState(0); // Store hero section height
 
   useEffect(() => {
@@ -34,6 +38,7 @@ const Header: React.FC<HeaderProps> = ({ lng }) => {
       // setVisible(position > scrollPosition); // Detect scroll direction (up or down)
       setPosition(scrollPosition);
 
+      setIsOpen(position == scrollPosition);
       // Dynamically check if we're within the hero section or beyond
       setIsTop(scrollPosition < heroHeight); // Use dynamic heroHeight instead of hardcoded value
     };
@@ -49,23 +54,29 @@ const Header: React.FC<HeaderProps> = ({ lng }) => {
     <>
       <header
         className={`fixed h-16 top-0 z-50 w-full 
-          transition-transform duration-300 ease-in-out ${
+          transition-all duration-300 ease-in-out ${
             isTop ? "bg-transparent" : "bg-white shadow-md"
           } `}
       >
-        <div className="relative w-full h-full flex items-center justify-between px-4 lg:px-8">
+        <div
+          className={`relative w-full h-full flex items-center justify-between ${
+            isTop ? "lg:justify-end" : ""
+          } px-4 lg:px-8`}
+        >
           {/* Logo */}
           <Logo
             border
-            className={`${isTop ? "hidden" : ""} h-full w-full lg:w-16 `}
+            className={`${isTop ? "hidden" : ""} h-5/6 w-full lg:w-16 `}
+            link
+            lng={lng}
           />
 
-          <nav className={`lg:flex top-0 space-x-8 z-50`}>
-            <NavBar isOpen={isOpen} lng={lng} />
+          <nav className={`lg:flex lg:right-0 top-0 space-x-8 z-50`}>
+            <NavBar isOpen={isOpen} lng={lng} dark={isTop} />
           </nav>
           {/* Burger icon for small screens */}
           <div className="lg:hidden relative right-0 -top-1/4">
-            <Burger isOpen={isOpen} setIsOpen={setIsOpen} />
+            <Burger isOpen={isOpen} setIsOpen={setIsOpen} dark={isTop} />
           </div>
         </div>
       </header>

@@ -2,8 +2,9 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Map from "@/components/map";
-import OpeningHours from "@/components/openingHours";
+import Services from "@/components/Services";
 import Showcase from "@/components/showcase";
+import Testimonials from "@/components/Testimonials";
 
 // Define the type for the incoming props, which will include `lng` as a parameter
 interface PageProps {
@@ -18,7 +19,8 @@ const Page: React.FC<PageProps> = ({ params: { lng } }) => {
       {/* <div className="h-screen"></div> */}
       <Hero lng={lng} />
       <Showcase />
-      <OpeningHours lng={lng} />
+      <Testimonials lng={lng} />
+      <Services lng={lng} />
       <Map />
       <Footer lng={lng} />
       <Header lng={lng} />

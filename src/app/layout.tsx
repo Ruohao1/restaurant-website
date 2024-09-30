@@ -35,9 +35,9 @@ export default function RootLayout({
   params: { lng: string };
 }) {
   return (
-    <html lang={lng} dir={lng}>
+    <html className="w-screen" lang={lng} dir={lng}>
       <head />
-      <body>{children}</body>
+      <body className="w-screen">{children}</body>
     </html>
   );
 }

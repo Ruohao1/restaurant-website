@@ -11,7 +11,7 @@ const Hero: React.FC<HeroProps> = async ({ lng }) => {
   return (
     <section
       className="relative h-screen w-full flex items-center justify-center bg-cover bg-center bg-no-repeat floating-background"
-      style={{ backgroundImage: 'url("/showcase/sushi-plate.jpeg")' }}
+      style={{ backgroundImage: 'url("/showcase/sushi-plate.jpg")' }}
       id="hero"
     >
       {/* Overlay for darker effect */}

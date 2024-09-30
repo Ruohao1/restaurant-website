@@ -16,7 +16,7 @@ const Footer: React.FC<FooterProps> = async ({ lng }) => {
         <div className="flex flex-col md:flex-row justify-between items-center mb-8 space-y-8 md:space-y-0">
           {/* Logo Section */}
           <div className="flex flex-col items-center md:items-start">
-            <Logo />
+            <Logo className="w-24 h-24" />
             <p className="text-gray-400 mt-4 text-sm text-center md:text-left">
               {t("browse-title")}
             </p>
