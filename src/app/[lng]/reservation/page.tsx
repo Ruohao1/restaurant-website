@@ -195,7 +195,6 @@ const Reservation: React.FC<ReservationProps> = ({ params: { lng } }) => {
                             selected={field.value}
                             onSelect={field.onChange}
                             disabled={(date) => date < new Date()}
-                            initialFocus
                           />
                         </PopoverContent>
                       </Popover>
