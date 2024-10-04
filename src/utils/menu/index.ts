@@ -1,6 +1,3 @@
-import { pluralize } from "./string";
-import { TFunction } from "i18next";
-
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 
@@ -59,30 +56,4 @@ export async function getMenusByCategory() {
   }
 
   return { data };
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function getComposition(menuId: number, t: TFunction<any, any>) {
-  const composition = menu.menu_food
-    .map((menuFood: MenuFood) => {
-      const quantity =
-        typeof menuFood.quantity === "number" ||
-        typeof menuFood.quantity === "string"
-          ? menuFood.quantity
-          : "Unknown Quantity";
-
-      const foodName =
-        quantity === 1
-          ? typeof menuFood.food?.food_name === "string"
-            ? menuFood.food.food_name
-            : t(`${menuFood.food_types?.type_title}`)
-          : typeof menuFood.food?.food_name === "string"
-          ? pluralize(menuFood.food.food_name)
-          : pluralize(t(`${menuFood.food_types?.type_title}`));
-
-      return `${quantity} ${foodName.toLowerCase()}`;
-    })
-    .join(", ");
-
-  return composition;
 }
