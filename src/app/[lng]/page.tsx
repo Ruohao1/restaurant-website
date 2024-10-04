@@ -1,5 +1,3 @@
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Map from "@/components/map";
 import Services from "@/components/Services";
@@ -15,16 +13,13 @@ interface PageProps {
 
 const Page: React.FC<PageProps> = ({ params: { lng } }) => {
   return (
-    <>
-      {/* <div className="h-screen"></div> */}
+    <div>
       <Hero lng={lng} />
       <Showcase />
       <Testimonials lng={lng} />
       <Services lng={lng} />
       <Map />
-      <Footer lng={lng} />
-      <Header lng={lng} />
-    </>
+    </div>
   );
 };
 

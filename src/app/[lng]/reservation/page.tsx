@@ -17,7 +17,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/toaster";
 import { CalendarIcon } from "lucide-react";
-import Header from "@/components/Header";
 import {
   Popover,
   PopoverContent,
@@ -87,9 +86,6 @@ const Reservation: React.FC<ReservationProps> = ({ params: { lng } }) => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <Header lng={lng} />
-
       {/* Form Container */}
       <div className="flex flex-grow justify-center items-center bg-gray-100 py-10 px-6">
         <div className="w-full max-w-lg bg-white shadow-lg rounded-lg p-8">
