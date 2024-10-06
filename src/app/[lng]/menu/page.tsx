@@ -2,6 +2,7 @@ import { useTranslation } from "@/app/i18n";
 import MenuCard from "@/components/menu/MenuCard";
 import { getMenusByCategory } from "@/utils/menu";
 import { HEADER_HEIGHT } from "@/constants/components/header";
+import Link from "next/link";
 
 interface MenuPageProps {
   params: {
@@ -13,12 +14,17 @@ const MenuPage: React.FC<MenuPageProps> = async ({ params: { lng } }) => {
   const { t } = await useTranslation(lng);
   const { data: categories } = await getMenusByCategory();
 
+  const inset = { top: `${HEADER_HEIGHT}` };
+
   return (
-    <div className={`mt-${HEADER_HEIGHT} p-4`}>
+    <div className={`p-4 mt-${inset.top}`}>
       <div className="max-w-5xl mx-auto">
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-center text-gray-800">
             {t("menu.title")}
+            <p>
+              <Link href={`/${lng}/cart`}>Cart</Link>
+            </p>
           </h1>
         </div>
 

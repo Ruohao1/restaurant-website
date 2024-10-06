@@ -27,6 +27,7 @@ import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import config from "@/constants/config";
 import { Textarea } from "@/components/ui/textarea";
+import { HEADER_HEIGHT } from "@/constants/components/header";
 
 const FormSchema = z
   .object({
@@ -84,8 +85,10 @@ const Reservation: React.FC<ReservationProps> = ({ params: { lng } }) => {
     });
   }
 
+  const inset = { top: HEADER_HEIGHT };
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className={`-mt-${inset.top} min-h-screen flex flex-col`}>
       {/* Form Container */}
       <div className="flex flex-grow justify-center items-center bg-gray-100 py-10 px-6">
         <div className="w-full max-w-lg bg-white shadow-lg rounded-lg p-8">
