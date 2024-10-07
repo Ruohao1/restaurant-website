@@ -1,4 +1,3 @@
-import { NextResponse } from 'next/server'
 // import acceptLanguage from 'accept-language'
 // import { fallbackLng, languages, cookieName } from './app/i18n/settings'
 
@@ -35,7 +34,27 @@ import { NextResponse } from 'next/server'
 
 //   return NextResponse.next()
 // }
+// /src/middleware.ts
 
-export function middleware() {
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+export function middleware(request: NextRequest) {
+  const hostname = request.nextUrl.hostname;
+
+  // Vérifie si la requête vient du sous-domaine admin.domain.com
+  if (hostname.startsWith("admin.")) {
+    // Redirige vers /dashboard en utilisant les routes du répertoire /src/app/dashboard
+    const newUrl = request.nextUrl.clone();
+    newUrl.pathname = `/dashboard${newUrl.pathname}`;
+    return NextResponse.rewrite(newUrl);
+  }
+
+  // Si ce n'est pas le sous-domaine admin, continuer la navigation normale
   return NextResponse.next();
 }
+
+// Configurer le middleware pour appliquer à toutes les routes
+export const config = {
+  matcher: "/:path*", // Le middleware s'appliquera à toutes les routes
+};

@@ -2,10 +2,10 @@ import { useTranslation } from "@/app/i18n";
 import Link from "next/link";
 
 interface CartProps {
-  lng: string;
+  params: { lng: string };
 }
 
-const Cart: React.FC<CartProps> = async ({ lng }) => {
+const Cart: React.FC<CartProps> = async ({ params: { lng } }) => {
   const { t } = await useTranslation(lng);
 
   return (

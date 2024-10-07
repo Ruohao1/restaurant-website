@@ -10,6 +10,7 @@ export default function RootLayout({
   params: { lng: string };
 }) {
   const inset = { top: HEADER_HEIGHT };
+
   return (
     <>
       <Header lng={lng} />
