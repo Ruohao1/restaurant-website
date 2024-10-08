@@ -28,6 +28,7 @@ import { Calendar } from "@/components/ui/calendar";
 import config from "@/constants/config";
 import { Textarea } from "@/components/ui/textarea";
 import { HEADER_HEIGHT } from "@/constants/components/header";
+import { useTranslation } from "react-i18next";
 
 const FormSchema = z
   .object({
@@ -73,7 +74,7 @@ const Reservation: React.FC<ReservationProps> = ({ params: { lng } }) => {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
     toast({
       className: "bg-gray-500 bottom-0 right-0 rounded",
       title: "You submitted the following values:",
@@ -83,9 +84,24 @@ const Reservation: React.FC<ReservationProps> = ({ params: { lng } }) => {
         </pre>
       ),
     });
+
+    console.log("Submitting data to the server...");
+    console.log(data);
+
+    const response = await fetch("/api/reserve", {
+      method: "POST",
+      body: JSON.stringify({ data }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log(response);
   }
 
   const inset = { top: HEADER_HEIGHT };
+
+  const { t } = useTranslation(lng);
 
   return (
     <div className={`-mt-${inset.top} min-h-screen flex flex-col`}>
@@ -93,7 +109,7 @@ const Reservation: React.FC<ReservationProps> = ({ params: { lng } }) => {
       <div className="flex flex-grow justify-center items-center bg-gray-100 py-10 px-6">
         <div className="w-full max-w-lg bg-white shadow-lg rounded-lg p-8">
           <h1 className="text-2xl font-bold mb-6 text-gray-800 text-center">
-            Make a Reservation
+            {t("reservation.title")}
           </h1>
 
           {/* Form */}
@@ -105,7 +121,7 @@ const Reservation: React.FC<ReservationProps> = ({ params: { lng } }) => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>{t("reservation.name")} *</FormLabel>
                     <FormControl>
                       <Input
                         placeholder={config.name}
@@ -124,7 +140,7 @@ const Reservation: React.FC<ReservationProps> = ({ params: { lng } }) => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email (Optional)</FormLabel>
+                    <FormLabel>{t("reservation.email")}**</FormLabel>
                     <FormControl>
                       <Input
                         placeholder={config.email || "Email"}
@@ -143,7 +159,7 @@ const Reservation: React.FC<ReservationProps> = ({ params: { lng } }) => {
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone</FormLabel>
+                    <FormLabel>{t("reservation.phone")}**</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="(+33) 0 00 00 00 00"
@@ -178,7 +194,7 @@ const Reservation: React.FC<ReservationProps> = ({ params: { lng } }) => {
                               {field.value ? (
                                 format(field.value, "PPP")
                               ) : (
-                                <span>Pick a date</span>
+                                <span>{t("reservation.pick-a-date")}</span>
                               )}
                               <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                             </Button>
@@ -209,7 +225,7 @@ const Reservation: React.FC<ReservationProps> = ({ params: { lng } }) => {
                   name="time"
                   render={({ field }) => (
                     <FormItem className="flex-1">
-                      <FormLabel>Time</FormLabel>
+                      <FormLabel>{t("reservation.time")}</FormLabel>
                       <FormControl>
                         <Input type="time" className="rounded" {...field} />
                       </FormControl>
@@ -225,7 +241,7 @@ const Reservation: React.FC<ReservationProps> = ({ params: { lng } }) => {
                 name="guests"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Guests</FormLabel>
+                    <FormLabel>{t("reservation.guests")}</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -246,10 +262,10 @@ const Reservation: React.FC<ReservationProps> = ({ params: { lng } }) => {
                 name="message"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Message</FormLabel>
+                    <FormLabel>{t("reservation.message")}</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Tell us more about your reservation"
+                        placeholder={t("reservation.message-placeholder")}
                         className="resize-none rounded"
                         {...field}
                       />
@@ -260,12 +276,22 @@ const Reservation: React.FC<ReservationProps> = ({ params: { lng } }) => {
               />
 
               {/* Submit Button */}
-              <div className="flex justify-end">
+              <div className="flex justify-between">
+                <div>
+                  <p className="text-xs text-gray-500">
+                    <span>* </span>
+                    {t("reservation.required-fields")}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    <span>** </span>
+                    {t("reservation.required-either-fields")}
+                  </p>
+                </div>
                 <Button
                   type="submit"
                   className="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700"
                 >
-                  Submit
+                  {t("reservation.submit")}
                 </Button>
               </div>
             </form>

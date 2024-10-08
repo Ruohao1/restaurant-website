@@ -32,5 +32,19 @@
     "takeawayCondition": "à partir de 40 euros d'achat",
     "delivery": "Livraison",
     "reservations": "Réservations"
+  },
+
+  "reservation" : {
+    "link": "Réserver",
+    "title": "Réserver une table",
+    "name": "Nom",
+    "phone": "Téléphone",
+    "email": "Email",
+    "date": "Date",
+    "time": "Heure",
+    "guests": "Nombre de convives",
+    "message": "Un petit mot ?",
+    "message-placeholder": "Indiquez si vous avez des allergies ou des demandes spéciales",
+    "submit": "Réserver"
   }
 } 
