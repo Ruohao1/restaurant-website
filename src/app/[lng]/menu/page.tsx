@@ -17,9 +17,9 @@ const MenuPage: React.FC<MenuPageProps> = async ({ params: { lng } }) => {
   const inset = { top: `${HEADER_HEIGHT}` };
 
   return (
-    <div className={`p-4 mt-${inset.top}`}>
+    <div className={`mt-${inset.top}`}>
       <div className="max-w-5xl mx-auto">
-        <div className="mb-6">
+        <div className="my-6">
           <h1 className="text-3xl font-bold text-center text-gray-800">
             {t("menu.title")}
             <p>
