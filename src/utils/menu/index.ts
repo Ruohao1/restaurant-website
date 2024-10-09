@@ -27,7 +27,10 @@ export async function getMenusByCategory(): Promise<{ data: Category[] }> {
         menu (
           id,
           code,
-          name
+          name,
+          description,
+          price,
+          image
         )
       `
     )

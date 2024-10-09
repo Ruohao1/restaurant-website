@@ -9,17 +9,20 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Toaster } from "@/components/ui/toaster";
 
 const FormSchema = z.object({
   username: z.string().min(2, {
     message: "Username must be at least 2 characters.",
+  }),
+  password: z.string().min(8, {
+    message: "Password must be at least 8 characters.",
   }),
 });
 
@@ -28,6 +31,7 @@ const Auth = () => {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       username: "",
+      password: "",
     },
   });
 
@@ -44,7 +48,7 @@ const Auth = () => {
 
   return (
     <div className="flex justify-center items-center h-screen w-screen -mt-16">
-      <div className="flex justify-center items-center w-full max-w-7xl">
+      <div className="flex justify-center items-center w-full max-w-4xl border mx-16 p-8">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -55,13 +59,23 @@ const Auth = () => {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Identifiant</FormLabel>
                   <FormControl>
-                    <Input placeholder="shadcn" {...field} />
+                    <Input placeholder="id" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Mot de passe</FormLabel>
+                  <FormControl>
+                    <Input placeholder="pw" {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -70,6 +84,7 @@ const Auth = () => {
           </form>
         </Form>
       </div>
+      <Toaster />
     </div>
   );
 };
