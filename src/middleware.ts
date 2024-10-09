@@ -48,6 +48,9 @@ export function middleware(request: NextRequest) {
     const newUrl = request.nextUrl.clone();
     newUrl.pathname = `/dashboard${newUrl.pathname}`;
     return NextResponse.rewrite(newUrl);
+  } else {
+    // Si ce n'est pas le sous-domaine admin, continuer la navigation normale
+    return NextResponse.next();
   }
 
   // Si ce n'est pas le sous-domaine admin, continuer la navigation normale

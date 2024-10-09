@@ -7,123 +7,183 @@ export type Json =
   | Json[]
 
 export type Database = {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          operationName?: string
+          query?: string
+          variables?: Json
+          extensions?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
+      delivery: {
+        Row: {
+          address: string
+          delivery_date: string | null
+          delivery_time: string | null
+          id: number
+          orders_id: number
+        }
+        Insert: {
+          address: string
+          delivery_date?: string | null
+          delivery_time?: string | null
+          id?: never
+          orders_id: number
+        }
+        Update: {
+          address?: string
+          delivery_date?: string | null
+          delivery_time?: string | null
+          id?: never
+          orders_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "delivery_orders_id_fkey"
+            columns: ["orders_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       food: {
         Row: {
-          food_code: string | null
-          food_description: string | null
-          food_id: number
-          food_image: string | null
-          food_name: string
-          food_price: number
+          code: string | null
+          description: string | null
+          id: number
+          image: string | null
+          name: string
+          price: number
           serving_quantity: number | null
           type_id: number
         }
         Insert: {
-          food_code?: string | null
-          food_description?: string | null
-          food_id: number
-          food_image?: string | null
-          food_name: string
-          food_price: number
+          code?: string | null
+          description?: string | null
+          id?: number
+          image?: string | null
+          name: string
+          price: number
           serving_quantity?: number | null
           type_id: number
         }
         Update: {
-          food_code?: string | null
-          food_description?: string | null
-          food_id?: number
-          food_image?: string | null
-          food_name?: string
-          food_price?: number
+          code?: string | null
+          description?: string | null
+          id?: number
+          image?: string | null
+          name?: string
+          price?: number
           serving_quantity?: number | null
           type_id?: number
         }
         Relationships: [
           {
-            foreignKeyName: "food_type_id_food_types_type_id"
+            foreignKeyName: "food_type_id_fkey"
             columns: ["type_id"]
             isOneToOne: false
             referencedRelation: "food_types"
-            referencedColumns: ["type_id"]
+            referencedColumns: ["id"]
           },
         ]
       }
       food_types: {
         Row: {
+          code: string | null
+          id: number
+          image: string | null
           serving_quantity: number | null
-          type_code: string | null
-          type_id: number
-          type_title: string
+          title: string
         }
         Insert: {
+          code?: string | null
+          id?: number
+          image?: string | null
           serving_quantity?: number | null
-          type_code?: string | null
-          type_id: number
-          type_title: string
+          title: string
         }
         Update: {
+          code?: string | null
+          id?: number
+          image?: string | null
           serving_quantity?: number | null
-          type_code?: string | null
-          type_id?: number
-          type_title?: string
+          title?: string
         }
         Relationships: []
       }
       menu: {
         Row: {
           category_id: number
-          menu_code: string | null
-          menu_description: string | null
-          menu_id: number
-          menu_image: number | null
-          menu_name: string
-          menu_price: number
+          code: string | null
+          description: string | null
+          id: number
+          image: string | null
+          name: string
+          price: number
         }
         Insert: {
           category_id: number
-          menu_code?: string | null
-          menu_description?: string | null
-          menu_id: number
-          menu_image?: number | null
-          menu_name: string
-          menu_price: number
+          code?: string | null
+          description?: string | null
+          id?: number
+          image?: string | null
+          name: string
+          price: number
         }
         Update: {
           category_id?: number
-          menu_code?: string | null
-          menu_description?: string | null
-          menu_id?: number
-          menu_image?: number | null
-          menu_name?: string
-          menu_price?: number
+          code?: string | null
+          description?: string | null
+          id?: number
+          image?: string | null
+          name?: string
+          price?: number
         }
         Relationships: [
           {
-            foreignKeyName: "menu_category_id_menu_categories_category_id"
+            foreignKeyName: "menu_category_id_fkey"
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "menu_categories"
-            referencedColumns: ["category_id"]
+            referencedColumns: ["id"]
           },
         ]
       }
       menu_categories: {
         Row: {
-          category_id: number
-          category_letter: string | null
-          category_title: string | null
+          id: number
+          letter: string | null
+          title: string | null
         }
         Insert: {
-          category_id: number
-          category_letter?: string | null
-          category_title?: string | null
+          id?: number
+          letter?: string | null
+          title?: string | null
         }
         Update: {
-          category_id?: number
-          category_letter?: string | null
-          category_title?: string | null
+          id?: number
+          letter?: string | null
+          title?: string | null
         }
         Relationships: []
       }
@@ -148,25 +208,175 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "menu_food_food_id_food_food_id"
+            foreignKeyName: "menu_food_food_id_fkey"
             columns: ["food_id"]
             isOneToOne: false
             referencedRelation: "food"
-            referencedColumns: ["food_id"]
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "menu_food_menu_id_menu_menu_id"
-            columns: ["menu_id"]
-            isOneToOne: false
-            referencedRelation: "menu"
-            referencedColumns: ["menu_id"]
-          },
-          {
-            foreignKeyName: "menu_food_type_id_food_types_type_id"
+            foreignKeyName: "menu_food_food_type_id_fkey"
             columns: ["food_type_id"]
             isOneToOne: false
             referencedRelation: "food_types"
-            referencedColumns: ["type_id"]
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "menu_food_menu_id_fkey"
+            columns: ["menu_id"]
+            isOneToOne: false
+            referencedRelation: "menu"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_menu: {
+        Row: {
+          id: number
+          menu_id: number
+          orders_id: number
+          quantity: number
+        }
+        Insert: {
+          id?: never
+          menu_id: number
+          orders_id: number
+          quantity: number
+        }
+        Update: {
+          id?: never
+          menu_id?: number
+          orders_id?: number
+          quantity?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_menu_menu_id_fkey"
+            columns: ["menu_id"]
+            isOneToOne: false
+            referencedRelation: "menu"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_menu_orders_id_fkey"
+            columns: ["orders_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          created_at: string | null
+          details: string | null
+          guest_email: string | null
+          guest_name: string | null
+          id: number
+          status: string
+          total: number
+          users_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          details?: string | null
+          guest_email?: string | null
+          guest_name?: string | null
+          id?: never
+          status?: string
+          total: number
+          users_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          details?: string | null
+          guest_email?: string | null
+          guest_name?: string | null
+          id?: never
+          status?: string
+          total?: number
+          users_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_users_id_fkey"
+            columns: ["users_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reservation: {
+        Row: {
+          date: string
+          guest_email: string | null
+          guest_name: string | null
+          guest_phone: string | null
+          guests: number
+          id: number
+          message: string | null
+          time: string
+          users_id: string | null
+        }
+        Insert: {
+          date: string
+          guest_email?: string | null
+          guest_name?: string | null
+          guest_phone?: string | null
+          guests: number
+          id?: never
+          message?: string | null
+          time: string
+          users_id?: string | null
+        }
+        Update: {
+          date?: string
+          guest_email?: string | null
+          guest_name?: string | null
+          guest_phone?: string | null
+          guests?: number
+          id?: never
+          message?: string | null
+          time?: string
+          users_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reservation_users_id_fkey"
+            columns: ["users_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      takeaway: {
+        Row: {
+          id: number
+          orders_id: number
+          pickup_date: string | null
+          pickup_time: string | null
+        }
+        Insert: {
+          id?: never
+          orders_id: number
+          pickup_date?: string | null
+          pickup_time?: string | null
+        }
+        Update: {
+          id?: never
+          orders_id?: number
+          pickup_date?: string | null
+          pickup_time?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "takeaway_orders_id_fkey"
+            columns: ["orders_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
           },
         ]
       }

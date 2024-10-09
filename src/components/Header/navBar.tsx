@@ -40,8 +40,8 @@ const NavBar: React.FC<NavBarProps> = ({ isOpen, lng, dark }) => {
               </a>
             </li>
             <li>
-              <a href={`/${lng}/book`} className="hover:text-blue-600">
-                {t("book.link")}
+              <a href={`/${lng}/reservation`} className="hover:text-blue-600">
+                {t("reservation.link")}
               </a>
             </li>
           </ul>

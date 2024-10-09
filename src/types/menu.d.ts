@@ -1,11 +1,15 @@
+interface Category {
+  id: number;
+  title: string | null;
+  menu: Menu[];
+}
 interface Menu {
-  menu_id: number;
-  menu_code: string | null;
-  menu_name: string;
-  menu_description: string | null;
-  menu_price: number;
-  menu_image: number | null;
-  menu_food: MenuFood[];
+  id: number;
+  code: string | null;
+  name: string;
+  description: string | null;
+  price: number;
+  image: string | null;
 }
 
 interface MenuFood {
@@ -17,7 +21,7 @@ interface MenuFood {
 }
 
 interface Food {
-  food_id: number;
-  food_name: string;
-  food_image: string | null;
+  id: number;
+  name: string;
+  image: string | null;
 }

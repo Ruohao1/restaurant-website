@@ -31,17 +31,17 @@ const MenuPage: React.FC<MenuPageProps> = async ({ params: { lng } }) => {
         {/* Menu Categories */}
         <div className="space-y-8">
           {categories.map((category) => (
-            <div key={`category-${category.category_id}`} className="p-4">
+            <div key={`category-${category.id}`} className="p-4">
               {/* Category Title */}
               <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-                {category.category_title && t(`${category.category_title}`)}
+                {category.title && t(`${category.title}`)}
               </h2>
 
               {/* Menu Items Grid */}
               <div className="grid grid-cols-1 gap-6">
                 {category.menu.map((menu) => (
-                  <div key={`menu-${menu.menu_id}`}>
-                    <MenuCard menuId={menu.menu_id} lng={lng} />
+                  <div key={`menu-${menu.id}`}>
+                    <MenuCard menuId={menu.id} lng={lng} />
                   </div>
                 ))}
               </div>

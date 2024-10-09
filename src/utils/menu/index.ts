@@ -5,10 +5,7 @@ export async function getFood(foodId: number) {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
 
-  const { data, error } = await supabase
-    .from("food")
-    .select()
-    .eq("food_id", foodId);
+  const { data, error } = await supabase.from("food").select().eq("id", foodId);
   if (error) {
     console.error(error);
     return {};
@@ -17,7 +14,7 @@ export async function getFood(foodId: number) {
   return { data: data[0] };
 }
 
-export async function getMenusByCategory() {
+export async function getMenusByCategory(): Promise<{ data: Category[] }> {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
 
@@ -25,34 +22,19 @@ export async function getMenusByCategory() {
     .from("menu_categories")
     .select(
       `
-        category_id,
-        category_letter,
-        category_title,
+        id,
+        title,
         menu (
-          menu_id,
-          menu_code,
-          menu_name,
-          menu_description,
-          menu_price,
-          menu_image,
-          menu_food (
-            quantity,
-            food (
-              food_id,
-              food_name,
-              food_image
-            ),
-            food_types (
-              type_title
-            )
-          )
+          id,
+          code,
+          name
         )
       `
     )
-    .neq("category_id", 1);
+    .neq("id", 1);
   if (error) {
     console.error(error);
-    return { data: [] };
+    return { data: [] } as { data: Category[] };
   }
 
   return { data };

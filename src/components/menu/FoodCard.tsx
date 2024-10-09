@@ -3,7 +3,7 @@ import { getFood } from "@/utils/menu";
 import Image from "next/image";
 
 interface FoodCardProps {
-  foodId: Food["food_id"];
+  foodId: Food["id"];
   lng: string;
 }
 
@@ -14,12 +14,12 @@ const FoodCard: React.FC<FoodCardProps> = async ({ foodId, lng }) => {
   return (
     <div>
       <h3 className="text-sm text-gray-700 mb-4 italic">
-        {t(`${data?.food_name}`)}
+        {t(`${data?.name}`)}
       </h3>
-      {data?.food_image && (
+      {data?.image && (
         <Image
-          src={`/food/${data.food_image}` || "/placeholder.jpg"}
-          alt={data.food_name}
+          src={`/food/${data.image}` || "/placeholder.jpg"}
+          alt={data.name}
           width={300}
           height={200}
           className="w-full h-40 sm:h-48 lg:h-56 object-cover rounded-md"

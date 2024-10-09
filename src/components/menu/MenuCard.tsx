@@ -18,29 +18,25 @@ const MenuCard: React.FC<MenuCardProps> = async ({
   className,
 }) => {
   const { t } = await useTranslation(lng);
+
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
   const { data: menuData, error } = await supabase
     .from("menu")
     .select(
       `
-      menu_id,
-      menu_code,
-      menu_name,
-      menu_price,
-      menu_description,
-      menu_image,
-      menu_food (
-        food (
-          food_id
-        )
-      )
-      `
+      id,
+      code,
+      name,
+      price,
+      description,
+      image
+    `
     )
-    .eq("menu_id", menuId);
+    .eq("id", menuId);
 
   if (error) {
-    console.error(error);
+    console.error("Error fetching menu data", error);
     return <></>;
   }
 
@@ -54,13 +50,11 @@ const MenuCard: React.FC<MenuCardProps> = async ({
       )}
     >
       {/* Menu Image */}
-      {menu.menu_image && (
+      {menu.image && (
         <div className="relative w-full lg:w-48 h-48">
           <Image
-            src={
-              menu.menu_image ? `/food/${menu.menu_image}` : "/placeholder.jpg"
-            }
-            alt={menu.menu_name}
+            src={menu.image ? `/food/${menu.image}` : "/placeholder.jpg"}
+            alt={menu.name}
             fill
             className="object-cover"
           />
@@ -72,27 +66,23 @@ const MenuCard: React.FC<MenuCardProps> = async ({
         {/* Menu Name and Price */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-gray-800">
-            {menu.menu_code
-              ? `${menu.menu_code} - ${menu.menu_name}`
-              : menu.menu_name}
+            {menu.code ? `${menu.code} - ${menu.name}` : menu.name}
           </h2>
-          <p className="text-lg font-bold text-gray-600">{menu.menu_price}€</p>
+          <p className="text-lg font-bold text-gray-600">{menu.price}€</p>
         </div>
 
         <div className="flex-1 pr-16">
           {" "}
           {/* This div takes up the remaining space */}
           {/* Menu Composition */}
-          {menu.menu_id && (
+          {menu.id && (
             <div className="mb-2">
-              <MenuComposition menuId={menu.menu_id} lng={lng} />
+              <MenuComposition menuId={menu.id} lng={lng} />
             </div>
           )}
           {/* Menu Description */}
-          {menu.menu_description && (
-            <div className="text-gray-600 mb-4">
-              {t(`${menu.menu_description}`)}
-            </div>
+          {menu.description && (
+            <div className="text-gray-600 mb-4">{t(`${menu.description}`)}</div>
           )}
         </div>
 
