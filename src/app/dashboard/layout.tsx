@@ -1,6 +1,12 @@
 import "@/assets/styles/globals.css";
+
 import Logo from "@/components/logo";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+};
 
 export default function RootLayout({
   children,
