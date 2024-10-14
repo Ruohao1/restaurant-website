@@ -21,6 +21,9 @@ export default function RootLayout({
             <li>
               <Link href="/dashboard/reservations">Réservations</Link>
             </li>
+            <li>
+              <Link href="/dashboard/auth">Auth</Link>
+            </li>
           </ul>
         </nav>
       </header>

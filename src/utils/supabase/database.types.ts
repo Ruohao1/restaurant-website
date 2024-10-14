@@ -307,6 +307,32 @@ export type Database = {
           },
         ]
       }
+      profile: {
+        Row: {
+          id: string
+          role: string | null
+          username: string
+        }
+        Insert: {
+          id: string
+          role?: string | null
+          username: string
+        }
+        Update: {
+          id?: string
+          role?: string | null
+          username?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profile_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reservation: {
         Row: {
           date: string

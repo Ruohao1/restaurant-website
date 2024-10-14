@@ -2,31 +2,16 @@ import { cookies } from "next/headers";
 import { columns } from "./reservationColumn";
 import { DataTable } from "./reservationTable";
 import { createClient } from "@/utils/supabase/server";
+import { isAdmin } from "@/middleware/dashboard";
 
 async function getData(): Promise<Reservation[]> {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
 
   const {
-    data: { session },
-    error: sessionError,
-  } = await supabase.auth.getSession();
-  if (sessionError) {
-    console.error("Error fetching session", sessionError);
-    return [];
-  }
-
-  if (!session) {
-    console.error("User is not authenticated");
-    return [];
-  }
-
-  const { user } = session;
-
-  if (!user || !user.role?.includes("admin")) {
-    console.error("Access denied: user does not have admin privileges");
-    return [];
-  }
+    data: { user },
+  } = await supabase.auth.getUser();
+  console.log(await isAdmin(user as User));
 
   const { data, error } = await supabase.from("reservation").select("*");
 
@@ -34,7 +19,6 @@ async function getData(): Promise<Reservation[]> {
     console.error("Error fetching reservations", error);
     return [];
   }
-  console.log(data);
   return data;
 }
 

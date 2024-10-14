@@ -21,9 +21,7 @@ const FormSchema = z.object({
   username: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-  password: z.string().min(8, {
-    message: "Password must be at least 8 characters.",
-  }),
+  password: z.string(),
 });
 
 const Auth = () => {
@@ -35,7 +33,7 @@ const Auth = () => {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
     toast({
       title: "You submitted the following values:",
       description: (
@@ -44,6 +42,22 @@ const Auth = () => {
         </pre>
       ),
     });
+
+    const response = await fetch("/api/auth/signin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    // redirect to dashboard
+    if (response?.message === "Sign up successful") {
+      window.location.href = "/dashboard";
+    }
   }
 
   return (
@@ -74,7 +88,7 @@ const Auth = () => {
                 <FormItem>
                   <FormLabel>Mot de passe</FormLabel>
                   <FormControl>
-                    <Input placeholder="pw" {...field} />
+                    <Input placeholder="pw" type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -84,6 +98,25 @@ const Auth = () => {
           </form>
         </Form>
       </div>
+
+      {/* signout button */}
+      <Button
+        onClick={() => {
+          fetch("/api/auth/signout", {
+            method: "POST",
+          })
+            .then(() => {
+              window.location.href = "/dashboard";
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        }}
+        className="m-4"
+      >
+        Sign out
+      </Button>
+
       <Toaster />
     </div>
   );
