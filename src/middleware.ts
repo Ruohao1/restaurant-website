@@ -6,16 +6,25 @@ import { cookies } from "next/headers";
 import { isAdmin } from "@/middleware/dashboard";
 
 export async function middleware(request: NextRequest) {
+  // Exclude static assets from the rewrite (like CSS, JS, images, and favicon)
+  const pathname = request.nextUrl.pathname;
   const hostname = request.nextUrl.hostname;
-  // Vérifie si la requête vient du sous-domaine admin.domain.com
+
+  if (
+    pathname.startsWith("/_next") || // Exclude Next.js built assets
+    pathname.startsWith("/static") || // Exclude static files in /public/static
+    pathname.startsWith("/favicon.ico") || // Exclude favicon
+    pathname.match(/\.(css|js|svg|png|jpg|jpeg|gif|woff|woff2|ttf|eot)$/) // Exclude file extensions
+  ) {
+    return NextResponse.next(); // Allow static assets to pass through without rewriting
+  }
+
+  // Rewrite only for admin subdomain
   if (hostname.startsWith("admin.")) {
-    // Redirige vers /dashboard en utilisant les routes du répertoire /src/app/dashboard
     const newUrl = request.nextUrl.clone();
     newUrl.pathname = `/dashboard${newUrl.pathname}`;
     return NextResponse.rewrite(newUrl);
   }
-
-  const pathname = request.nextUrl.pathname;
 
   // Allow access to the auth page
   if (pathname === "/dashboard/auth") {
@@ -48,5 +57,5 @@ export async function middleware(request: NextRequest) {
 
 // Configurer le middleware pour appliquer à toutes les routes
 export const config = {
-  matcher: "/:path*", // Le middleware s'appliquera à toutes les routes
+  matcher: ["/:path*", "/dashboard/:path*"], // Le middleware s'appliquera à toutes les routes
 };
