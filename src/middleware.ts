@@ -31,7 +31,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (pathname.startsWith("/dashboard")) {
+  if (hostname.startsWith("admin.") && pathname.startsWith("/")) {
     // Check if user is authenticated
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
@@ -42,13 +42,17 @@ export async function middleware(request: NextRequest) {
 
     if (userError || !user) {
       console.error("User is not authenticated");
-      return NextResponse.redirect(new URL("/dashboard/auth", request.url));
+      return NextResponse.redirect(new URL("/auth", request.url));
     }
 
     // Check if user is an admin
     if (!(await isAdmin(user as User))) {
       console.error("User is not authorized");
-      return NextResponse.redirect("/");
+      // remove admin. from the hostname and redirect to the homepage
+
+      const newUrl = request.nextUrl.clone();
+      newUrl.hostname = newUrl.hostname.replace("admin.", "");
+      return NextResponse.redirect(new URL(newUrl.href));
     }
   }
   // Allow the request to proceed
