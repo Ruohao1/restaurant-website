@@ -39,7 +39,7 @@ export async function middleware(request: NextRequest) {
 
     if (!authToken) {
       console.error("User is not authenticated");
-      return NextResponse.redirect(new URL("/auth", request.url)); // Redirect to /auth if no token
+      return NextResponse.redirect(new URL("/auth", newUrl)); // Redirect to /auth if no token
     }
 
     // Initialize Supabase client with the auth token from cookies
@@ -74,7 +74,7 @@ export async function middleware(request: NextRequest) {
 
     if (userError || !user) {
       console.error("User is not authenticated");
-      return NextResponse.redirect(new URL("/auth", request.url));
+      return NextResponse.redirect(new URL("/auth", newUrl));
     }
 
     // Check if the user is an admin
@@ -82,7 +82,7 @@ export async function middleware(request: NextRequest) {
     if (!isUserAdmin) {
       console.error("User is not authorized");
       newUrl.hostname = newUrl.hostname.replace("admin.", "");
-      return NextResponse.redirect(new URL(newUrl.href));
+      return NextResponse.redirect(new URL(newUrl));
     }
 
     // If authenticated and authorized, allow the request to proceed
