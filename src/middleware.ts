@@ -1,40 +1,72 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { createClient } from "./utils/supabase/server";
-import { cookies } from "next/headers";
-
 import { isAdmin } from "@/middleware/dashboard";
+import { createServerClient } from "@supabase/ssr";
 
 export async function middleware(request: NextRequest) {
-  // Exclude static assets from the rewrite (like CSS, JS, images, and favicon)
+  // Create an unmodified response
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  });
+
   const pathname = request.nextUrl.pathname;
   const hostname = request.nextUrl.hostname;
 
+  // Exclude static assets from being handled by middleware
   if (
     pathname.startsWith("/_next") || // Exclude Next.js built assets
-    pathname.startsWith("/static") || // Exclude static files in /public/static
+    pathname.startsWith("/static") || // Exclude static files
     pathname.startsWith("/favicon.ico") || // Exclude favicon
     pathname.match(/\.(css|js|svg|png|jpg|jpeg|gif|woff|woff2|ttf|eot)$/) // Exclude file extensions
   ) {
-    return NextResponse.next(); // Allow static assets to pass through without rewriting
+    return NextResponse.next(); // Allow static assets to pass through
   }
 
-  // Rewrite only for admin subdomain
+  // Handle the admin subdomain specifically
   if (hostname.startsWith("admin.")) {
     const newUrl = request.nextUrl.clone();
     newUrl.pathname = `/dashboard${newUrl.pathname}`;
-    return NextResponse.rewrite(newUrl);
-  }
 
-  // Allow access to the auth page
-  if (pathname === "/dashboard/auth") {
-    return NextResponse.next();
-  }
+    // Allow access to the /auth page
+    if (pathname === "/auth") {
+      return NextResponse.next();
+    }
 
-  if (hostname.startsWith("admin.") && pathname.startsWith("/")) {
-    // Check if user is authenticated
-    const cookieStore = cookies();
-    const supabase = createClient(cookieStore);
+    // Check if the user is authenticated using cookies
+    const authToken = request.cookies.get("auth_token"); // Replace 'auth_token' with your actual token name
+
+    if (!authToken) {
+      console.error("User is not authenticated");
+      return NextResponse.redirect(new URL("/auth", request.url));
+    }
+
+    // Initialize Supabase client with the auth token from cookies
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return request.cookies.getAll();
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value }) =>
+              request.cookies.set(name, value)
+            );
+            response = NextResponse.next({
+              request,
+            });
+            cookiesToSet.forEach(({ name, value, options }) =>
+              response.cookies.set(name, value, options)
+            );
+          },
+        },
+      }
+    );
+
+    // Get the authenticated user
     const {
       data: { user },
       error: userError,
@@ -45,21 +77,22 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/auth", request.url));
     }
 
-    // Check if user is an admin
-    if (!(await isAdmin(user as User))) {
+    // Check if the user is an admin
+    const isUserAdmin = await isAdmin(user as User);
+    if (!isUserAdmin) {
       console.error("User is not authorized");
-      // remove admin. from the hostname and redirect to the homepage
-
-      const newUrl = request.nextUrl.clone();
       newUrl.hostname = newUrl.hostname.replace("admin.", "");
       return NextResponse.redirect(new URL(newUrl.href));
     }
+
+    // If authenticated and authorized, allow the request to proceed
+    return response;
   }
-  // Allow the request to proceed
-  return NextResponse.next();
+
+  return response;
 }
 
-// Configurer le middleware pour appliquer à toutes les routes
+// Configure the middleware to apply only to relevant routes
 export const config = {
-  matcher: ["/:path*", "/dashboard/:path*"], // Le middleware s'appliquera à toutes les routes
+  matcher: ["/dashboard/:path*", "/auth"], // Apply middleware only to /dashboard and /auth
 };

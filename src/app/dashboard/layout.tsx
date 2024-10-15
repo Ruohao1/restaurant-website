@@ -23,13 +23,13 @@ export default function RootLayout({
         <nav className="flex items-center">
           <ul className="flex space-x-4">
             <li>
-              <Link href="/dashboard/orders">Commandes</Link>
+              <Link href="/orders">Commandes</Link>
             </li>
             <li>
-              <Link href="/dashboard/reservations">Réservations</Link>
+              <Link href="/reservations">Réservations</Link>
             </li>
             <li>
-              <Link href="/dashboard/auth">Auth</Link>
+              <Link href="/auth">Auth</Link>
             </li>
           </ul>
         </nav>

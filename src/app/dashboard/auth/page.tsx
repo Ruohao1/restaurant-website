@@ -56,7 +56,7 @@ const Auth = () => {
       });
     // redirect to dashboard
     if (response?.message === "Sign up successful") {
-      window.location.href = "/dashboard";
+      window.location.href = "/";
     }
   }
 
