@@ -19,6 +19,7 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/_next") || // Exclude Next.js built assets
     pathname.startsWith("/static") || // Exclude static files
     pathname.startsWith("/favicon.ico") || // Exclude favicon
+    pathname.startsWith("/api") || // Exclude favicon
     pathname.match(/\.(css|js|svg|png|jpg|jpeg|gif|woff|woff2|ttf|eot)$/) // Exclude file extensions
   ) {
     return NextResponse.next(); // Allow static assets to pass through
