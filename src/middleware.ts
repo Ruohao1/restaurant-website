@@ -1,18 +1,18 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { isAdmin } from "@/middleware/dashboard";
+import { isAdmin } from "@/middleware/dashboard"; // Assuming this function exists
 import { createServerClient } from "@supabase/ssr";
 
 export async function middleware(request: NextRequest) {
-  // Create an unmodified response
+  const pathname = request.nextUrl.pathname;
+  const hostname = request.nextUrl.hostname;
+
+  // Create an unmodified response object
   let response = NextResponse.next({
     request: {
       headers: request.headers,
     },
   });
-
-  const pathname = request.nextUrl.pathname;
-  const hostname = request.nextUrl.hostname;
 
   // Exclude static assets from being handled by middleware
   if (
@@ -27,7 +27,12 @@ export async function middleware(request: NextRequest) {
   // Handle the admin subdomain specifically
   if (hostname.startsWith("admin.")) {
     const newUrl = request.nextUrl.clone();
-    newUrl.pathname = `/dashboard${newUrl.pathname}`;
+
+    // Rewrite admin.domain.com to admin.domain.com/dashboard
+    if (pathname === "/") {
+      newUrl.pathname = "/dashboard"; // Root of admin.domain.com serves /dashboard
+      return NextResponse.rewrite(newUrl);
+    }
 
     // Allow access to the /auth page
     if (pathname === "/auth") {
@@ -39,7 +44,7 @@ export async function middleware(request: NextRequest) {
 
     if (!authToken) {
       console.error("User is not authenticated");
-      return NextResponse.redirect(new URL("/auth", newUrl.href));
+      return NextResponse.redirect(new URL("/auth", request.url)); // Redirect to /auth if no token
     }
 
     // Initialize Supabase client with the auth token from cookies
@@ -74,7 +79,7 @@ export async function middleware(request: NextRequest) {
 
     if (userError || !user) {
       console.error("User is not authenticated");
-      return NextResponse.redirect(new URL("/auth", newUrl.href));
+      return NextResponse.redirect(new URL("/auth", request.url));
     }
 
     // Check if the user is an admin
@@ -89,10 +94,11 @@ export async function middleware(request: NextRequest) {
     return response;
   }
 
+  // Default response
   return response;
 }
 
 // Configure the middleware to apply only to relevant routes
 export const config = {
-  matcher: ["/dashboard/:path*", "/auth"], // Apply middleware only to /dashboard and /auth
+  matcher: ["/:path*", "/dashboard/:path*", "/auth"], // Apply middleware only to relevant routes
 };
