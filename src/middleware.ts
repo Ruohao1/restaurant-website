@@ -27,16 +27,11 @@ export async function middleware(request: NextRequest) {
   // Handle the admin subdomain specifically
   if (hostname.startsWith("admin.")) {
     const newUrl = request.nextUrl.clone();
-
-    // Rewrite admin.domain.com to admin.domain.com/dashboard
-    if (pathname === "/") {
-      newUrl.pathname = "/dashboard"; // Root of admin.domain.com serves /dashboard
-      return NextResponse.rewrite(newUrl);
-    }
+    newUrl.pathname = `/dashboard${newUrl.pathname}`; // Root of admin.domain.com serves /dashboard
 
     // Allow access to the /auth page
     if (pathname === "/auth") {
-      return NextResponse.next();
+      return NextResponse.rewrite(newUrl);
     }
 
     // Check if the user is authenticated using cookies
