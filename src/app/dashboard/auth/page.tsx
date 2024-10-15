@@ -55,6 +55,7 @@ const Auth = () => {
         console.error("Error:", error);
       });
     // redirect to dashboard
+    console.log(response);
     if (response?.message === "Sign up successful") {
       window.location.href = "/";
     }
