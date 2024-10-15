@@ -36,7 +36,7 @@ export async function middleware(request: NextRequest) {
     }
 
     // Check if the user is authenticated using cookies
-    const authToken = request.cookies.get("auth_token"); // Replace 'auth_token' with your actual token name
+    const authToken = request.cookies.get("supabase.auth.token"); // Replace 'auth_token' with your actual token name
 
     if (!authToken) {
       console.error("User is not authenticated");
