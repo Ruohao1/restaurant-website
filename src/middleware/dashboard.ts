@@ -1,6 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
 import { createServerClient } from "@supabase/ssr";
-import { match } from "assert";
 import { NextRequest, NextResponse } from "next/server";
 
 // Function to check if a user is an admin
