@@ -62,20 +62,15 @@ export const checkAdmin = async (request: NextRequest) => {
 
   if (!user) {
     console.error("User is not authenticated");
-    return NextResponse.json(
-      { error: "User not authenticated" },
-      { status: 401 }
-    ); // Unauthorized
+    return NextResponse.redirect(new URL("/auth", request.url)); // Unauthorized
   }
 
   const isAdminUser = await isAdmin(user as User);
 
   if (!isAdminUser) {
     console.error("User is not authorized");
-    return NextResponse.json(
-      { error: "User is not authorized" },
-      { status: 403 }
-    ); // Forbidden
+    request.nextUrl.hostname = request.nextUrl.hostname.replace("admin.", "");
+    return NextResponse.redirect(new URL("/", request.nextUrl)); // Forbidden
   }
 
   return response; // If everything is fine, return the response
