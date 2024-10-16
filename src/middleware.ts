@@ -19,7 +19,6 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/static") || // Exclude static files
     pathname.startsWith("/favicon.ico") || // Exclude favicon
     pathname.startsWith("/api") || // Exclude favicon
-    pathname.startsWith("/auth") || // Exclude favicon
     pathname.match(/\.(css|js|svg|png|jpg|jpeg|gif|woff|woff2|ttf|eot)$/) // Exclude file extensions
   ) {
     return NextResponse.next(); // Allow static assets to pass through
@@ -30,9 +29,9 @@ export async function middleware(request: NextRequest) {
     return await handleAdmin(request);
   }
 
-  if (pathname.startsWith("/dashboard")) {
-    return NextResponse.redirect(new URL("/", request.nextUrl));
-  }
+  // if (pathname.startsWith("/dashboard")) {
+  //   return NextResponse.redirect(new URL("/", request.nextUrl));
+  // }
 
   // Default response
   return response;

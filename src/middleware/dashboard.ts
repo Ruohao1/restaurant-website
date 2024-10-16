@@ -79,6 +79,7 @@ export const handleAdmin = async (request: NextRequest) => {
 
   // If trying to access the auth page, let it pass through
   if (url.pathname.startsWith("/auth")) {
+    console.log("Auth page accessed");
     return NextResponse.next();
   }
 
