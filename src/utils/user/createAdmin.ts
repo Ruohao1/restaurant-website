@@ -1,4 +1,3 @@
-import { cookies } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 
 export const createAdmin = async (
@@ -6,8 +5,7 @@ export const createAdmin = async (
   username: string,
   password: string
 ) => {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = createClient();
 
   const { error: signUpError } = await supabase.auth.signUp({
     email,
