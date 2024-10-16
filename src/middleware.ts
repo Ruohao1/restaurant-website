@@ -32,7 +32,7 @@ export async function middleware(request: NextRequest) {
     // dashboard routes as root of the admin subdomain
     const url = request.nextUrl.clone();
     // Only update the pathname if it does not already start with '/dashboard'
-    if (!url.pathname.startsWith("/dashboard")) {
+    if (!url.pathname.startsWith("/")) {
       url.pathname = `/dashboard${url.pathname}`;
     }
 
