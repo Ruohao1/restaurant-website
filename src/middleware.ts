@@ -33,6 +33,9 @@ export async function middleware(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = `/dashboard${url.pathname}`;
 
+    const response = await checkAdmin(request);
+    NextResponse.rewrite(url);
+
     return response;
   }
 
