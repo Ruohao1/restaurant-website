@@ -53,6 +53,7 @@ export const checkAdmin = async (request: NextRequest) => {
   } = await supabase.auth.getUser();
 
   if (userError) {
+    console.error("Error fetching user", userError);
     return {
       error: "Unable to fetch user data",
       status: 500,
