@@ -29,13 +29,25 @@ export async function middleware(request: NextRequest) {
 
   // Handle the admin subdomain specifically
   if (hostname.startsWith("admin.")) {
+    const url = request.nextUrl.clone();
+    url.pathname = `/dashboard${url.pathname}`;
+
     const response = await checkAdmin(request);
     console.log("Admin middleware response:", response);
 
-    // if no error const url = request.nextUrl.clone(); url.pathname = `/dashboard/${request.nextUrl.pathname}`;
-    // return NextResponse.redirect(url);
+    // Redirect to the login page if the user is not authenticated
+    if (response.status === 401) {
+      return NextResponse.redirect(new URL("/auth", url));
+    }
 
-    return response;
+    // Redirect to the homepage if the user is not authorized
+    if (response.status === 403) {
+      url.hostname = url.hostname.replace("admin.", "");
+      return NextResponse.redirect(new URL("/", url));
+    }
+
+    // if everything is fine, return the response with the updated URL
+    return NextResponse.redirect(url);
   }
 
   if (pathname.startsWith("/dashboard")) {
