@@ -7,7 +7,6 @@ import FoodCard from "./FoodCard";
 import { pluralize } from "@/utils/menu/string";
 import { useTranslation } from "@/app/i18n";
 import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
 
 interface CompositionProps {
   menuId: number;
@@ -16,8 +15,7 @@ interface CompositionProps {
 
 const MenuComposition: React.FC<CompositionProps> = async ({ menuId, lng }) => {
   const { t } = await useTranslation(lng);
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = createClient();
   const { data: menu, error } = await supabase
     .from("menu_food")
     .select(

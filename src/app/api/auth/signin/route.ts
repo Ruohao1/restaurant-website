@@ -1,6 +1,5 @@
 // api/auth/signin.ts
 import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -11,11 +10,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "Invalid username" }, { status: 400 });
   }
 
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = createClient();
 
   // Using signIn instead of signUp
-  const { data, error: signInError } = await supabase.auth.signInWithPassword({
+  const { error: signInError } = await supabase.auth.signInWithPassword({
     email: "ruohaolin@gmail.com", // Ensure this email exists in your users table
     password,
   });
@@ -25,12 +23,5 @@ export async function POST(req: NextRequest) {
   }
 
   // Here you should set a cookie with the session token if required
-  return NextResponse.json(
-    { message: "Sign up successful" },
-    {
-      headers: {
-        "Set-Cookie": `supabase.auth.token=${data.session.access_token}; Path=/; HttpOnly; Secure; SameSite=Strict`, // Set a secure cookie with the token
-      },
-    }
-  );
+  return NextResponse.json({ message: "Sign up successful" });
 }

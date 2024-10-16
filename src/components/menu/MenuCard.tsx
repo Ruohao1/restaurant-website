@@ -1,6 +1,5 @@
 import { useTranslation } from "@/app/i18n";
 import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
 import Image from "next/image";
 import MenuComposition from "./MenuComposition";
 import { cn } from "@/lib/utils";
@@ -19,8 +18,7 @@ const MenuCard: React.FC<MenuCardProps> = async ({
 }) => {
   const { t } = await useTranslation(lng);
 
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = createClient();
   const { data: menuData, error } = await supabase
     .from("menu")
     .select(
