@@ -29,7 +29,13 @@ export async function middleware(request: NextRequest) {
 
   // Handle the admin subdomain specifically
   if (hostname.startsWith("admin.")) {
+    // dashboard routes as root of the admin subdomain
     const url = request.nextUrl.clone();
+    // Only update the pathname if it does not already start with '/dashboard'
+    if (!url.pathname.startsWith("/dashboard")) {
+      url.pathname = `/dashboard${url.pathname}`;
+    }
+
     url.pathname = `/dashboard${url.pathname}`;
 
     const response = await checkAdmin(request);
