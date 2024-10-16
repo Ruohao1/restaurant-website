@@ -91,8 +91,8 @@ export const handleAdmin = async (request: NextRequest) => {
     console.error(checkAuth.error);
     switch (checkAuth.error) {
       case "User is not authenticated":
-        NextResponse.redirect(new URL("/auth", request.nextUrl));
-        break;
+      case "Unable to fetch user data":
+        return NextResponse.redirect(new URL("/auth", request.nextUrl));
       case "User is not an admin":
         url.hostname = request.nextUrl.hostname.replace("admin.", "");
         url.pathname = "/";
