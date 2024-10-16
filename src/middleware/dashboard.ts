@@ -85,6 +85,7 @@ export const handleAdmin = async (request: NextRequest) => {
   const url = request.nextUrl.clone();
   url.pathname = `/dashboard${url.pathname}`;
 
+  // If trying to access the auth page, let it pass through
   if (url.pathname.startsWith("/auth")) {
     return NextResponse.next({ request });
   }
@@ -93,18 +94,15 @@ export const handleAdmin = async (request: NextRequest) => {
 
   if ("error" in checkAuth) {
     console.error(checkAuth.error);
-    switch (checkAuth.error) {
-      case "User is not authenticated":
-      case "Unable to fetch user data":
-        return NextResponse.redirect(new URL("/auth", request.nextUrl));
-      case "User is not an admin":
-        url.hostname = request.nextUrl.hostname.replace("admin.", "");
-        url.pathname = "/";
-        return NextResponse.redirect(url);
-      default:
-        return NextResponse.error();
+    if (checkAuth.status === 401) {
+      return NextResponse.redirect(new URL("/auth", request.nextUrl)); // Unauthorized
+    } else if (checkAuth.status === 403) {
+      url.hostname = request.nextUrl.hostname.replace("admin.", "");
+      url.pathname = "/";
+      return NextResponse.redirect(url); // Not an admin
     }
+    return NextResponse.error(); // Handle unexpected errors
   }
 
-  return NextResponse.rewrite(url);
+  return NextResponse.rewrite(url); // If user is an admin, rewrite the URL
 };

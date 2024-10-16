@@ -37,7 +37,10 @@ export async function middleware(request: NextRequest) {
   return response;
 }
 
-// Configure the middleware to apply only to relevant routes
 export const config = {
-  matcher: ["/:path*", "/dashboard/:path*", "/auth"], // Apply middleware only to relevant routes
+  matcher: [
+    "/dashboard/:path*", // Ensure only dashboard routes are protected
+    "/auth", // Auth route should also be protected
+    "/:path*",
+  ],
 };
