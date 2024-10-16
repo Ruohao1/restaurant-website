@@ -36,8 +36,6 @@ export async function middleware(request: NextRequest) {
       url.pathname = `/dashboard${url.pathname}`;
     }
 
-    url.pathname = `/dashboard${url.pathname}`;
-
     const response = await checkAdmin(request);
     console.log("Admin middleware response:", response);
 
