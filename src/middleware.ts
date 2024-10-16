@@ -6,9 +6,6 @@ export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const hostname = request.nextUrl.hostname;
 
-  console.log("Middleware running");
-  console.log("Hostname:", hostname);
-
   // Create an unmodified response object
   const response = NextResponse.next({
     request: {

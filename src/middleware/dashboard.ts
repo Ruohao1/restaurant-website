@@ -85,7 +85,7 @@ export const handleAdmin = async (request: NextRequest) => {
   const url = request.nextUrl.clone();
   url.pathname = `/dashboard${url.pathname}`;
 
-  if (url.pathname === "/auth") {
+  if (url.pathname.startsWith("/auth")) {
     return NextResponse.next({ request });
   }
 
