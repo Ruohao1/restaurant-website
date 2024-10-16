@@ -75,14 +75,14 @@ export const checkAdmin = async (request: NextRequest) => {
 // Function to handle the admin subdomain
 export const handleAdmin = async (request: NextRequest) => {
   const url = request.nextUrl.clone();
-  url.pathname = `/dashboard${url.pathname}`;
-  console.log("request.nextUrl: ", request.nextUrl);
-
-  // If trying to access the auth page, let it pass through
   if (url.pathname.startsWith("/auth")) {
     console.log("Auth page accessed");
     return NextResponse.next();
   }
+  url.pathname = `/dashboard${url.pathname}`;
+  console.log("request.nextUrl: ", request.nextUrl);
+
+  // If trying to access the auth page, let it pass through
 
   const checkAuth = await checkAdmin(request);
 
