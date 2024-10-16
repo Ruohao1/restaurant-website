@@ -1,9 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
 
 export async function getFood(foodId: number) {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = createClient();
 
   const { data, error } = await supabase.from("food").select().eq("id", foodId);
   if (error) {
@@ -15,8 +13,7 @@ export async function getFood(foodId: number) {
 }
 
 export async function getMenusByCategory(): Promise<{ data: Category[] }> {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = createClient();
 
   const { data, error } = await supabase
     .from("menu_categories")
