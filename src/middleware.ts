@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-
-// import { isAdmin } from "@/middleware/dashboard"; // Assuming this function exists
-// import { createServerClient } from "@supabase/ssr";
-// import { createClient } from "./utils/supabase/server";
+import { checkAdmin } from "./middleware/dashboard";
 
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
@@ -32,38 +29,13 @@ export async function middleware(request: NextRequest) {
 
   // Handle the admin subdomain specifically
   if (hostname.startsWith("admin.")) {
-    const newUrl = request.nextUrl.clone();
-    newUrl.pathname = `/dashboard${newUrl.pathname}`; // Root of admin.domain.com serves /dashboard
+    const response = await checkAdmin(request);
+    console.log("Admin middleware response:", response);
 
-    // Allow access to the /auth page
-    if (pathname === "/auth") {
-      return NextResponse.rewrite(newUrl);
-    }
+    // if no error const url = request.nextUrl.clone(); url.pathname = `/dashboard/${request.nextUrl.pathname}`;
+    // return NextResponse.redirect(url);
 
-    // const cookie = request.headers.get("sesionId");
-    // const supabase = createClient(cookie);
-
-    // // Get the authenticated user
-    // const {
-    //   data: { user },
-    //   error: userError,
-    // } = await supabase.auth.getUser();
-
-    // if (userError || !user) {
-    //   console.error("User is not authenticated");
-    //   return NextResponse.redirect(new URL("/auth", newUrl));
-    // }
-
-    // // Check if the user is an admin
-    // const isUserAdmin = await isAdmin(user as User);
-    // if (!isUserAdmin) {
-    //   console.error("User is not authorized");
-    //   newUrl.hostname = newUrl.hostname.replace("admin.", "");
-    //   return NextResponse.redirect(new URL(newUrl));
-    // }
-
-    // If authenticated and authorized, allow the request to proceed
-    return NextResponse.rewrite(newUrl);
+    return response;
   }
 
   if (pathname.startsWith("/dashboard")) {

@@ -1,12 +1,10 @@
-import { cookies } from "next/headers";
 import { columns } from "./reservationColumn";
 import { DataTable } from "./reservationTable";
 import { createClient } from "@/utils/supabase/server";
 import { isAdmin } from "@/middleware/dashboard";
 
 async function getData(): Promise<Reservation[]> {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = createClient();
 
   const {
     data: { user },
