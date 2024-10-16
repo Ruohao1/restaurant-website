@@ -75,3 +75,11 @@ export const checkAdmin = async (request: NextRequest) => {
 
   return response; // If everything is fine, return the response
 };
+
+// Function to handle the admin subdomain
+export const handleAdmin = async (request: NextRequest) => {
+  const url = request.nextUrl.clone();
+  url.pathname = `/dashboard${url.pathname}`;
+
+  return NextResponse.rewrite(url);
+};

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { checkAdmin } from "./middleware/dashboard";
+import { handleAdmin } from "./middleware/dashboard";
 
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
@@ -29,14 +29,7 @@ export async function middleware(request: NextRequest) {
 
   // Handle the admin subdomain specifically
   if (hostname.startsWith("admin.")) {
-    // dashboard routes as root of the admin subdomain
-    const url = request.nextUrl.clone();
-    url.pathname = `/dashboard${url.pathname}`;
-
-    const response = await checkAdmin(request);
-    NextResponse.rewrite(url);
-
-    return response;
+    return await handleAdmin(request);
   }
 
   if (pathname.startsWith("/dashboard")) {
