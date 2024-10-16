@@ -85,6 +85,10 @@ export const handleAdmin = async (request: NextRequest) => {
   const url = request.nextUrl.clone();
   url.pathname = `/dashboard${url.pathname}`;
 
+  if (url.pathname === "/auth") {
+    return NextResponse.next({ request });
+  }
+
   const checkAuth = await checkAdmin(request);
 
   if ("error" in checkAuth) {
