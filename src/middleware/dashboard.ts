@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { createServerClient } from "@supabase/ssr";
+import { match } from "assert";
 import { NextRequest, NextResponse } from "next/server";
 
 // Function to check if a user is an admin
@@ -53,33 +54,54 @@ export const checkAdmin = async (request: NextRequest) => {
   } = await supabase.auth.getUser();
 
   if (userError) {
-    console.error("Error fetching user", userError);
-    return NextResponse.json(
-      { error: "Unable to fetch user data" },
-      { status: 500 }
-    );
+    return {
+      error: "Unable to fetch user data",
+      status: 500,
+    };
   }
 
   if (!user) {
-    console.error("User is not authenticated");
-    return NextResponse.redirect(new URL("/auth", request.url)); // Unauthorized
+    return {
+      error: "User is not authenticated",
+      status: 401,
+    }; // Unauthorized
   }
 
   const isAdminUser = await isAdmin(user as User);
 
   if (!isAdminUser) {
-    console.error("User is not authorized");
-    request.nextUrl.hostname = request.nextUrl.hostname.replace("admin.", "");
-    return NextResponse.redirect(new URL("/", request.nextUrl)); // Forbidden
+    return {
+      error: "User is not an admin",
+      status: 403,
+    }; //
   }
 
-  return response; // If everything is fine, return the response
+  return {
+    user,
+  }; // If everything is fine, return the response
 };
 
 // Function to handle the admin subdomain
 export const handleAdmin = async (request: NextRequest) => {
   const url = request.nextUrl.clone();
   url.pathname = `/dashboard${url.pathname}`;
+
+  const checkAuth = await checkAdmin(request);
+
+  if ("error" in checkAuth) {
+    console.error(checkAuth.error);
+    switch (checkAuth.error) {
+      case "User is not authenticated":
+        NextResponse.redirect(new URL("/auth", request.nextUrl));
+        break;
+      case "User is not an admin":
+        url.hostname = request.nextUrl.hostname.replace("admin.", "");
+        url.pathname = "/";
+        return NextResponse.redirect(url);
+      default:
+        return NextResponse.error();
+    }
+  }
 
   return NextResponse.rewrite(url);
 };
