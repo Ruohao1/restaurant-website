@@ -49,16 +49,7 @@ export const checkAdmin = async (request: NextRequest) => {
   // Attempt to get the authenticated user
   const {
     data: { user },
-    error: userError,
   } = await supabase.auth.getUser();
-
-  if (userError) {
-    console.error("Error fetching user", userError);
-    return {
-      error: "Unable to fetch user data",
-      status: 500,
-    };
-  }
 
   if (!user) {
     return {
@@ -95,7 +86,7 @@ export const handleAdmin = async (request: NextRequest) => {
 
   if ("error" in checkAuth) {
     console.error(checkAuth.error);
-    if (checkAuth.status === 401 || checkAuth.status === 500) {
+    if (checkAuth.status === 401) {
       return NextResponse.redirect(new URL("/auth", request.nextUrl)); // Unauthorized
     } else if (checkAuth.status === 403) {
       url.hostname = request.nextUrl.hostname.replace("admin.", "");
