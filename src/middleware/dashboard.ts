@@ -76,6 +76,7 @@ export const checkAdmin = async (request: NextRequest) => {
 export const handleAdmin = async (request: NextRequest) => {
   const url = request.nextUrl.clone();
   url.pathname = `/dashboard${url.pathname}`;
+  console.log("request.nextUrl: ", request.nextUrl);
 
   // If trying to access the auth page, let it pass through
   if (url.pathname.startsWith("/auth")) {
