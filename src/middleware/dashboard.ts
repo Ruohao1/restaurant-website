@@ -76,10 +76,8 @@ export const checkAdmin = async (request: NextRequest) => {
 export const handleAdmin = async (request: NextRequest) => {
   const url = request.nextUrl.clone();
   url.pathname = `/dashboard${url.pathname}`;
-  console.log("request.nextUrl: ", request.nextUrl);
 
   if (url.pathname.startsWith("/dashboard/auth")) {
-    console.log("Auth page accessed");
     return NextResponse.rewrite(url);
   }
 
@@ -94,7 +92,7 @@ export const handleAdmin = async (request: NextRequest) => {
     } else if (checkAuth.status === 403) {
       url.hostname = request.nextUrl.hostname.replace("admin.", "");
       url.pathname = "/";
-      return NextResponse.redirect(url); // Not an admin
+      return NextResponse.rewrite(url); // Not an admin
     }
     return NextResponse.error(); // Handle unexpected errors
   }

@@ -1,42 +1,39 @@
-import Stripe from 'stripe';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
+import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!
-);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const { foodItems } = await req.json();
+    // Parse the body from the request
+    const origin = req.nextUrl;
 
-    interface FoodItem {
-      food_name: string;
-      food_price: number;
-      quantity: number;
-    }
+    console.log(origin);
 
-    const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = foodItems.map((item: FoodItem) => ({
-      price_data: {
-      currency: 'usd',
-      product_data: {
-        name: item.food_name,
-      },
-      unit_amount: Math.round(item.food_price * 100),
-      },
-      quantity: item.quantity,
-    }));
-
+    // Create a Checkout Session
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items,
-      mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_URL}/cancel`,
+      line_items: [
+        {
+          // Provide the exact Price ID of the product you want to sell
+          price: "price_1QAZQKQ2SW4hLeeitkC5o1sJ",
+          quantity: 1,
+        },
+      ],
+      mode: "payment",
+      success_url: `${origin}/success`,
+      cancel_url: `${origin}/canceled`,
     });
 
-    // Optionally, save the order to the database
-    return NextResponse.json({ id: session.id });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ statusCode: 500, message: err });
+    // Redirect to the Stripe Checkout page
+    return NextResponse.redirect(session.url!, 303);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    // Handle errors
+    return new NextResponse(err.message, { status: err.statusCode || 500 });
   }
 }
+
+// Define methods allowed
+export const config = {
+  runtime: "edge",
+};

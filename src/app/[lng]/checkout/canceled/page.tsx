@@ -1,17 +1,17 @@
 import { useTranslation } from "@/app/i18n";
 
-interface DonatePageProps {
+interface CancelProps {
   lng: string;
 }
 
-const Checkout: React.FC<DonatePageProps> = async ({ lng }) => {
+const Cancel: React.FC<CancelProps> = async ({ lng }) => {
   const { t } = await useTranslation(lng);
 
   return (
     <div>
-      <h1>{t("checkout")}</h1>
+      <h1>{t("Cancel")}</h1>
     </div>
   );
 };
 
-export default Checkout;
+export default Cancel;
