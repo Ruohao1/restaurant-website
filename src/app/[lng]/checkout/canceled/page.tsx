@@ -1,10 +1,10 @@
 import { useTranslation } from "@/app/i18n";
 
-interface CancelProps {
+interface CanceledProps {
   lng: string;
 }
 
-const Cancel: React.FC<CancelProps> = async ({ lng }) => {
+const Canceled: React.FC<CanceledProps> = async ({ lng }) => {
   const { t } = await useTranslation(lng);
 
   return (
@@ -14,4 +14,4 @@ const Cancel: React.FC<CancelProps> = async ({ lng }) => {
   );
 };
 
-export default Cancel;
+export default Canceled;
