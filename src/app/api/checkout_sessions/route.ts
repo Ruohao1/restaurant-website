@@ -32,8 +32,3 @@ export async function POST(req: NextRequest) {
     return new NextResponse(err.message, { status: err.statusCode || 500 });
   }
 }
-
-// Define methods allowed
-export const config = {
-  runtime: "edge",
-};
