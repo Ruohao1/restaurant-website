@@ -1,10 +1,12 @@
 import { useTranslation } from "@/app/i18n";
 
 interface DonatePageProps {
-  lng: string;
+  params: {
+    lng: string;
+  };
 }
 
-const Checkout: React.FC<DonatePageProps> = async ({ lng }) => {
+const Checkout: React.FC<DonatePageProps> = async ({ params: { lng } }) => {
   const { t } = await useTranslation(lng);
 
   return (

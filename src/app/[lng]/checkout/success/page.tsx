@@ -1,10 +1,10 @@
 import { useTranslation } from "@/app/i18n";
 
 interface SuccessProps {
-  lng: string;
+  params: { lng: string };
 }
 
-const Success: React.FC<SuccessProps> = async ({ lng }) => {
+const Success: React.FC<SuccessProps> = async ({ params: { lng } }) => {
   const { t } = await useTranslation(lng);
 
   return (
