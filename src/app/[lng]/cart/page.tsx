@@ -1,8 +1,8 @@
 "use client";
 
 import { useTranslation } from "@/app/i18n/client";
-import { Button } from "@/components/ui/button";
 import React from "react";
+import CheckoutButton from "@/components/Stripe/CheckoutButton";
 
 interface CartProps {
   params: {
@@ -27,33 +27,10 @@ export default function Cart({ params: { lng } }: CartProps) {
 
   const { t } = useTranslation(lng);
 
-  async function handleCheckout(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    const response = await fetch("/api/checkout_sessions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to create session: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-
-    if (data.url) {
-      window.location.href = data.url;
-    }
-  }
-
   return (
     <div>
       <h1>{t("cart")}</h1>
-      <form onSubmit={handleCheckout}>
-        <Button type="submit">Checkout</Button>
-      </form>
+      <CheckoutButton lng={lng} />
     </div>
   );
 }

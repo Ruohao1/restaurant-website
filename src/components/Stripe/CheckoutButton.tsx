@@ -17,31 +17,23 @@ const CheckoutButton: React.FC<CheckoutButtonProps> = ({ lng }) => {
 
     setLoading(true);
 
-    try {
-      const response = await fetch("/api/checkout_sessions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    const response = await fetch("/api/checkout_sessions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-      if (!response.ok) {
-        throw new Error(`Failed to create session: ${response.statusText}`);
-      }
+    if (!response.ok) {
+      throw new Error(`Failed to create session: ${response.statusText}`);
+    }
 
-      const data = await response.json();
-      console.log("Checkout session data:", data);
+    const data = await response.json();
 
-      // Redirect the user to the Stripe Checkout page
-      if (data.url) {
-        window.location.href = data.url; // Use the Stripe session URL to redirect
-      } else {
-        throw new Error("Stripe session URL is missing.");
-      }
-    } catch (error) {
-      console.error("Error during checkout session creation:", error);
-    } finally {
-      setLoading(false);
+    setLoading(false);
+
+    if (data.url) {
+      window.location.href = data.url;
     }
   }
 

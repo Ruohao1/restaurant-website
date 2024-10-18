@@ -5,42 +5,36 @@ import Stripe from "stripe";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: NextRequest) {
-  console.log("Creating a new Checkout Session...");
-  console.log("Request:", req);
   try {
-    const origin = req.headers.get("origin");
+    // Get the full referer URL (which includes the language)
+    const referer = req.headers.get("referer");
 
-    if (!origin) {
-      throw new Error("Origin is not available.");
+    if (!referer) {
+      throw new Error("Referer header is missing");
     }
 
-    // Create Checkout Session with Stripe
+    // Parse the referer URL to extract the language and full path
+    const origin = new URL(referer).href;
+
+    // Proceed with your Stripe session creation
     const session = await stripe.checkout.sessions.create({
       line_items: [
         {
-          price: "price_1QAZQKQ2SW4hLeeitkC5o1sJ", // Replace with your actual Price ID
+          price: "price_1QAZQKQ2SW4hLeeitkC5o1sJ", // Replace with your actual Stripe Price ID
           quantity: 1,
         },
       ],
       mode: "payment",
-      success_url: `${origin}/?success=true`,
-      cancel_url: `${origin}/?canceled=true`,
+      success_url: `${origin}/?success=true`, // Keeps the same route with the language
+      cancel_url: `${origin}/?canceled=true`, // Keeps the same route with the language
     });
 
-    // Redirect to the Stripe Checkout page
-    return new NextResponse(JSON.stringify({ url: session.url }), {
-      headers: { "Content-Type": "application/json" },
-    });
+    return NextResponse.json({ url: session.url });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    // Return a proper error message
+    console.error("Error creating checkout session:", err);
     return new NextResponse(JSON.stringify({ error: err.message }), {
       status: err.statusCode || 500,
     });
   }
-}
-
-// Add support for method restrictions (like 'POST' only)
-export async function GET() {
-  return new NextResponse("Method Not Allowed", { status: 405 });
 }
