@@ -9,7 +9,7 @@ import React from "react";
 const DynamicCategoryTab = dynamic(
   () => import("@/components/menu/CategoryTab"),
   {
-    suspense: true, // Use suspense to show fallback during loading
+    suspense: true, // Use Suspense to show fallback during loading
     ssr: false, // Disable SSR for this component to lazy-load it on the client side
   }
 );
@@ -40,30 +40,46 @@ const MenuPage: React.FC<MenuPageProps> = async ({ params: { lng } }) => {
   }
 
   return (
-    <div>
-      <div>
-        <h1>{t("your_menu")}</h1>
+    <div className="container mx-auto p-4">
+      <div className="text-center mb-6">
+        <h1 className="text-3xl md:text-4xl font-bold mb-4">
+          {t("your_menu")}
+        </h1>
+        <Link
+          href={`/${lng}/cart`}
+          className="inline-block bg-blue-600 text-white py-2 px-4 rounded-md text-lg font-medium hover:bg-blue-700 transition"
+        >
+          {t("Cart")}
+        </Link>
       </div>
-      <Link href={`/${lng}/cart`}>{t("Cart")}</Link>
 
       {/* Tabs for Menu Categories */}
-      <Tabs defaultValue={categories[0].title!} className="w-screen">
-        <TabsList>
-          {categories?.map((category) => (
-            <TabsTrigger key={category.id} value={category.title!}>
-              {category.title}
-            </TabsTrigger>
-          ))}
-        </TabsList>
+      <Tabs defaultValue={categories[0].title!} className="w-full">
+        {/* Horizontal scrolling container for the tab list */}
+        <div className="relative rounded-md overflow-x-auto overflow-y-hidden h-12 max-w-full bg-muted shadow-md">
+          <TabsList className="flex justify-start items-center h-full w-max space-x-4 px-2">
+            {categories.map((category) => (
+              <TabsTrigger
+                key={category.id}
+                value={category.title!}
+                className="px-4 py-2 text-sm md:text-base whitespace-nowrap font-semibold rounded-md hover:bg-blue-100 focus:bg-blue-200 transition-colors"
+              >
+                {category.title}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </div>
 
         {/* Lazy-load CategoryTab for each category */}
-        {categories?.map((category) => (
-          <TabsContent value={category.title!} key={category.id}>
-            <React.Suspense fallback={<div>Loading...</div>}>
-              <DynamicCategoryTab categoryId={category.id} lng={lng} />
-            </React.Suspense>
-          </TabsContent>
-        ))}
+        <div className="mt-6">
+          {categories.map((category) => (
+            <TabsContent value={category.title!} key={category.id}>
+              <React.Suspense fallback={<div>Loading category...</div>}>
+                <DynamicCategoryTab categoryId={category.id} lng={lng} />
+              </React.Suspense>
+            </TabsContent>
+          ))}
+        </div>
       </Tabs>
     </div>
   );

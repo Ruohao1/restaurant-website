@@ -21,7 +21,7 @@ const CategoryTab: React.FC<CategoryTabProps> = async ({ categoryId, lng }) => {
     <div>
       {menu?.map((item) => (
         <div key={item.id} className="m-5">
-          <MenuCard menuId={item.id} lng={lng} />
+          <MenuCard menuId={item.id} lng={lng} className="w-full" />
         </div>
       ))}
     </div>
