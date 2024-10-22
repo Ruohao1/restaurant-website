@@ -27,7 +27,8 @@ export async function getMenusByCategory(): Promise<{ data: Category[] }> {
           name,
           description,
           price,
-          image
+          image,
+          stripe_price_id
         )
       `
     )
@@ -38,4 +39,40 @@ export async function getMenusByCategory(): Promise<{ data: Category[] }> {
   }
 
   return { data };
+}
+
+export async function getMenuComposition(menuId: number) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from("menu_food")
+    .select(
+      `food (
+        name
+        ),
+      food_types (
+        title
+      ),
+        quantity
+        `
+    )
+    .eq("menu_id", menuId);
+
+  if (error) {
+    console.error(error);
+    return "";
+  }
+
+  if (data.length === 0) {
+    return "";
+  }
+
+  const composition = data
+    .map((item) => {
+      const name = item.food ? item.food.name : item.food_types?.title;
+      return item.quantity + " " + name;
+    })
+    .reduce((acc, curr) => acc + ", " + curr);
+
+  return composition;
 }

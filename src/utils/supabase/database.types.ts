@@ -140,6 +140,7 @@ export type Database = {
           image: string | null
           name: string
           price: number
+          stripe_price_id: string | null
         }
         Insert: {
           category_id: number
@@ -149,6 +150,7 @@ export type Database = {
           image?: string | null
           name: string
           price: number
+          stripe_price_id?: string | null
         }
         Update: {
           category_id?: number
@@ -158,6 +160,7 @@ export type Database = {
           image?: string | null
           name?: string
           price?: number
+          stripe_price_id?: string | null
         }
         Relationships: [
           {
@@ -297,15 +300,7 @@ export type Database = {
           total?: number
           users_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "orders_users_id_fkey"
-            columns: ["users_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       profile: {
         Row: {
@@ -323,15 +318,7 @@ export type Database = {
           role?: string | null
           username?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "profile_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       reservation: {
         Row: {
@@ -367,15 +354,7 @@ export type Database = {
           time?: string
           users_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "reservation_users_id_fkey"
-            columns: ["users_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       takeaway: {
         Row: {
@@ -502,4 +481,19 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never

@@ -1,8 +1,18 @@
 import { useTranslation } from "@/app/i18n";
-import MenuCard from "@/components/menu/MenuCard";
-import { getMenusByCategory } from "@/utils/menu";
-import { HEADER_HEIGHT } from "@/constants/components/header";
+import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import dynamic from "next/dynamic";
+import React from "react";
+
+// Dynamically import the CategoryTab component
+const DynamicCategoryTab = dynamic(
+  () => import("@/components/menu/CategoryTab"),
+  {
+    suspense: true, // Use suspense to show fallback during loading
+    ssr: false, // Disable SSR for this component to lazy-load it on the client side
+  }
+);
 
 interface MenuPageProps {
   params: {
@@ -10,45 +20,51 @@ interface MenuPageProps {
   };
 }
 
+// Server-Side Rendered MenuPage Component
 const MenuPage: React.FC<MenuPageProps> = async ({ params: { lng } }) => {
-  const { t } = await useTranslation(lng);
-  const { data: categories } = await getMenusByCategory();
+  const { t } = await useTranslation(lng); // Server-side translations
 
-  const inset = { top: `${HEADER_HEIGHT}` };
+  const supabase = createClient();
+
+  // Fetch categories from Supabase on the server
+  const { data: categories, error } = await supabase
+    .from("menu_categories")
+    .select("*");
+
+  if (error) {
+    console.error(error);
+  }
+
+  if (!categories) {
+    return <div>{t("loading")}</div>;
+  }
 
   return (
-    <div className={`mt-${inset.top}`}>
-      <div className="max-w-5xl mx-auto">
-        <div className="my-6">
-          <h1 className="text-3xl font-bold text-center text-gray-800">
-            {t("menu.title")}
-            <p>
-              <Link href={`/${lng}/cart`}>Cart</Link>
-            </p>
-          </h1>
-        </div>
-
-        {/* Menu Categories */}
-        <div className="space-y-8">
-          {categories.map((category) => (
-            <div key={`category-${category.id}`} className="p-4">
-              {/* Category Title */}
-              <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-                {category.title && t(`${category.title}`)}
-              </h2>
-
-              {/* Menu Items Grid */}
-              <div className="grid grid-cols-1 gap-6">
-                {category.menu.map((menu) => (
-                  <div key={`menu-${menu.id}`}>
-                    <MenuCard menuId={menu.id} lng={lng} />
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+    <div>
+      <div>
+        <h1>{t("your_menu")}</h1>
       </div>
+      <Link href={`/${lng}/cart`}>{t("Cart")}</Link>
+
+      {/* Tabs for Menu Categories */}
+      <Tabs defaultValue={categories[0].title!} className="w-screen">
+        <TabsList>
+          {categories?.map((category) => (
+            <TabsTrigger key={category.id} value={category.title!}>
+              {category.title}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+
+        {/* Lazy-load CategoryTab for each category */}
+        {categories?.map((category) => (
+          <TabsContent value={category.title!} key={category.id}>
+            <React.Suspense fallback={<div>Loading...</div>}>
+              <DynamicCategoryTab categoryId={category.id} lng={lng} />
+            </React.Suspense>
+          </TabsContent>
+        ))}
+      </Tabs>
     </div>
   );
 };

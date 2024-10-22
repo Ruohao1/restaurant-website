@@ -3,6 +3,7 @@ import "@/assets/styles/globals.css";
 import { fallbackLng, languages } from "@/app/i18n/settings";
 
 import { useTranslation } from "@/app/i18n";
+import { CartProvider } from "@/context/CartContext";
 
 interface generateMetadataProps {
   params: {
@@ -37,7 +38,9 @@ export default function RootLayout({
   return (
     <html className="w-screen" lang={lng} dir={lng}>
       <head />
-      <body className="w-screen">{children}</body>
+      <body className="w-screen">
+        <CartProvider>{children}</CartProvider>
+      </body>
     </html>
   );
 }

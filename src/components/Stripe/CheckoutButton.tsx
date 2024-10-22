@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/app/i18n/client";
+import { useCart } from "@/context/CartContext";
 
 interface CheckoutButtonProps {
   lng: string;
@@ -11,6 +12,7 @@ interface CheckoutButtonProps {
 const CheckoutButton: React.FC<CheckoutButtonProps> = ({ lng }) => {
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation(lng);
+  const { cart } = useCart();
 
   async function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
@@ -22,6 +24,7 @@ const CheckoutButton: React.FC<CheckoutButtonProps> = ({ lng }) => {
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({ cart }),
     });
 
     if (!response.ok) {

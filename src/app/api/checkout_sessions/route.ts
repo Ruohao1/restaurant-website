@@ -6,33 +6,43 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: NextRequest) {
   try {
-    // Get the full referer URL (which includes the language)
     const referer = req.headers.get("referer");
 
     if (!referer) {
       throw new Error("Referer header is missing");
     }
 
-    // Parse the referer URL to extract the language and full path
     const origin = new URL(referer).href;
 
-    // Proceed with your Stripe session creation
+    const { cart } = await req.json();
+
+    // Log the cart to ensure it has the correct structure and values
+    console.log("Cart received for session creation:", cart);
+
+    const lineItems = cart.map((item: { id: string; quantity: number }) => {
+      console.log("Line item being processed:", item); // Debug log
+      return {
+        price: item.id,
+        quantity: item.quantity,
+      };
+    });
+
+    console.log("Line items for session creation:", lineItems); // Debug log
+
     const session = await stripe.checkout.sessions.create({
-      line_items: [
-        {
-          price: "price_1QAZQKQ2SW4hLeeitkC5o1sJ", // Replace with your actual Stripe Price ID
-          quantity: 1,
-        },
-      ],
+      line_items: lineItems,
       mode: "payment",
-      success_url: `${origin}/?success=true`, // Keeps the same route with the language
-      cancel_url: `${origin}/?canceled=true`, // Keeps the same route with the language
+      success_url: `${origin}/?success=true`,
+      cancel_url: `${origin}/?canceled=true`,
     });
 
     return NextResponse.json({ url: session.url });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    console.error("Error creating checkout session:", err);
+    console.error("Error creating checkout session:", {
+      message: err.message,
+      raw: err.raw,
+    });
     return new NextResponse(JSON.stringify({ error: err.message }), {
       status: err.statusCode || 500,
     });

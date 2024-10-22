@@ -10,6 +10,7 @@ interface Menu {
   description: string | null;
   price: number;
   image: string | null;
+  stripe_price_id: string | null;
 }
 
 interface MenuFood {

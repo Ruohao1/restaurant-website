@@ -3,7 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import Image from "next/image";
 import MenuComposition from "./MenuComposition";
 import { cn } from "@/lib/utils";
-import { ShoppingCartIcon } from "@heroicons/react/outline"; // Import the cart icon
+import AddToCartButton from "./AddToCartButton";
 
 interface MenuCardProps {
   menuId: number;
@@ -28,7 +28,8 @@ const MenuCard: React.FC<MenuCardProps> = async ({
       name,
       price,
       description,
-      image
+      image,
+      stripe_price_id
     `
     )
     .eq("id", menuId);
@@ -86,12 +87,7 @@ const MenuCard: React.FC<MenuCardProps> = async ({
 
         {/* Action Button - positioned absolutely */}
         <div className="absolute bottom-4 right-4">
-          <button
-            className="flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
-            aria-label="Add to cart"
-          >
-            <ShoppingCartIcon className="h-5 w-5" /> {/* Cart Icon */}
-          </button>
+          <AddToCartButton product={menu} />
         </div>
       </div>
     </div>
