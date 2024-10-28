@@ -1,0 +1,10 @@
+{
+    "NotFoundPage": {
+        "title": "Page non trouvée",
+        "message": "Désolé, la page que vous avez demandée n'existe pas."
+    },
+    "HomePage": {
+        "title": "Bonjour monde !",
+        "about": "Aller à la page à propos"
+    }
+}
