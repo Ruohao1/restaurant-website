@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { HEADER_HEIGHT } from "@/constants/components/header";
 
 export default async function LocaleLayout({
   children,
@@ -22,13 +23,14 @@ export default async function LocaleLayout({
   // Providing all messages to the client
   // side is the easiest way to get started
   const messages = await getMessages();
+  const insets = { top: HEADER_HEIGHT };
 
   return (
     <html lang={locale}>
       <body>
         <NextIntlClientProvider messages={messages}>
           <Header />
-          {children}
+          <div className={`mt-${insets.top}`}>{children}</div>
           <Footer />
         </NextIntlClientProvider>
       </body>
