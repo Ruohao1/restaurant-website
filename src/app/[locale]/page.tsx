@@ -1,12 +1,21 @@
-import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/routing";
+import Hero from "@/components/Hero";
+import Map from "@/components/map";
+import Services from "@/components/Services";
+import Showcase from "@/components/showcase";
+import Testimonials from "@/components/Testimonials";
+import { HEADER_HEIGHT } from "@/constants/components/header";
 
-export default function HomePage() {
-  const t = useTranslations("HomePage");
+const Page: React.FC = () => {
+  const inset = { top: HEADER_HEIGHT };
   return (
-    <div>
-      <h1>{t("title")}</h1>
-      <Link href="/about">{t("about")}</Link>
+    <div className={`-mt-${inset.top}`}>
+      <Hero />
+      <Showcase />
+      <Testimonials />
+      <Services />
+      <Map />
     </div>
   );
-}
+};
+
+export default Page;

@@ -1,0 +1,15 @@
+@keyframes float {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.floating-background {
+  animation: float 60s infinite linear; /* Adjust duration for speed */
+}

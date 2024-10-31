@@ -1,0 +1,13 @@
+.autoscroll {
+  animation: swipe var(--speed) linear infinite backwards;
+}
+
+@keyframes swipe {
+  0% {
+    transform: translate(0%);
+  }
+
+  100% {
+    transform: translate(-50%);
+  }
+}

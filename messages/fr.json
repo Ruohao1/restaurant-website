@@ -4,7 +4,62 @@
         "message": "Désolé, la page que vous avez demandée n'existe pas."
     },
     "HomePage": {
-        "title": "Bonjour monde !",
-        "about": "Aller à la page à propos"
+        "Hero": {
+            "title": "Bienvenue chez Yamayoshi",
+            "description": "Savourez des créations de sushi raffinées, préparées avec passion.",
+            "cta": "Voir le Menu"
+        },
+        "Testimonials": {
+            "title": "Nos clients sont ravis",
+            "description": "Découvrez les avis de nos clients satisfaits",
+            "google_reviews": "Avis Google",
+            "reviews": "avis"
+        },
+        "Services": {
+            "title": "Nos Services",
+            "takeaway": "Plats à emporter",
+            "takeawayDiscount": "Réduction de 10%",
+            "takeawayCondition": "à partir de 40 euros d'achat",
+            "delivery": "Livraison",
+            "reservations": "Réservations",
+            "openingHours": "Horaires d'ouverture",
+            "closed": "Fermé",
+            "open": "Ouvert",
+            "monday": "Lundi",
+            "tuesday": "Mardi",
+            "wednesday": "Mercredi",
+            "thursday": "Jeudi",
+            "friday": "Vendredi",
+            "saturday": "Samedi",
+            "sunday": "Dimanche"
+        }
+    },
+    "Footer": {
+        "browse-title": "Parcourir",
+        "links-title": "Liens",
+        "contacts-title": "Contacts",
+        "address-title": "Adresse",
+        "legal-mentions": "Mentions légales",
+        "all-rights-reserved": "Tous droits réservés",
+        "site-official": "Site officiel",
+        "design-by": "Design par"
+    },
+    "MenuPage": {
+        "link": "Menu"
+    },
+    "ReservationPage": {
+        "link": "Réserver",
+        "title": "Réserver une table",
+        "name": "Nom",
+        "phone": "Téléphone",
+        "email": "Email",
+        "date": "Date",
+        "time": "Heure",
+        "guests": "Nombre de convives",
+        "message": "Un petit mot ?",
+        "message-placeholder": "Indiquez si vous avez des allergies ou des demandes spéciales",
+        "submit": "Réserver",
+        "required-fields": "Ce champ est obligatoire",
+        "required-either-fields": "Au moins un des champs est requis"
     }
 }
