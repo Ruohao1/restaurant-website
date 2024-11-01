@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import Logo from "../logo";
+import Logo from "../../logo";
 import "./hero.css";
 import { Link } from "@/i18n/routing";
 

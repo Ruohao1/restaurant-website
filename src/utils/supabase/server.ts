@@ -1,12 +1,10 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { Database } from "./supabase";
 
-export function createClient() {
-  const cookieStore = cookies();
-
-  // Create a server's supabase client with newly configured cookie,
-  // which could be used to maintain user's session
-  return createServerClient(
+export function createClient(cookie?: ReturnType<typeof cookies>) {
+  const cookieStore = cookie || cookies();
+  return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -25,6 +23,11 @@ export function createClient() {
             // user sessions.
           }
         },
+      },
+      auth: {
+        // Automatically refresh the token
+        autoRefreshToken: true,
+        persistSession: false, // Since we're using this on the server
       },
     }
   );

@@ -12,7 +12,6 @@ const Header: React.FC = () => {
   const [position, setPosition] = useState(0);
   // const [visible, setVisible] = useState(true);
   const isHomePage = usePathname() === "/";
-  console.log(usePathname(), isHomePage);
   const [isTop, setIsTop] = useState(isHomePage); // Track if header is at the top of the hero
   const [heroHeight, setHeroHeight] = useState(0); // Store hero section height
 

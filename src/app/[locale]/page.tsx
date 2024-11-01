@@ -1,8 +1,8 @@
-import Hero from "@/components/Hero";
-import Map from "@/components/map";
-import Services from "@/components/Services";
-import Showcase from "@/components/showcase";
-import Testimonials from "@/components/Testimonials";
+import Hero from "@/components/Home/Hero";
+import Map from "@/components/Home/map";
+import Services from "@/components/Home/Services";
+import Showcase from "@/components/Home/showcase";
+import Testimonials from "@/components/Home/Testimonials";
 import { HEADER_HEIGHT } from "@/constants/components/header";
 
 const Page: React.FC = () => {

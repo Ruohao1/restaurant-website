@@ -1,5 +1,5 @@
 import config from "@/constants/config";
-import { cn } from "@/utils";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 interface LogoProps {
