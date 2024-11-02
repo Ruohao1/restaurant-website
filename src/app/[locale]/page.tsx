@@ -6,9 +6,8 @@ import Testimonials from "@/components/Home/Testimonials";
 import { HEADER_HEIGHT } from "@/constants/components/header";
 
 const Page: React.FC = () => {
-  const inset = { top: HEADER_HEIGHT };
   return (
-    <div className={`-mt-${inset.top}`}>
+    <div style={{ marginTop: -HEADER_HEIGHT / 4 + "rem" }}>
       <Hero />
       <Showcase />
       <Testimonials />

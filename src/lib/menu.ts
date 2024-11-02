@@ -12,8 +12,14 @@ export const getMenuCategories = async () => {
                 name, 
                 description,
                 menu_food (
-                    food_id,
-                    food_type_id,
+                    food (
+                        id,
+                        name
+                        ),
+                    food_types (
+                        id,
+                        title
+                        ), 
                     quantity
                 ),
                 price,

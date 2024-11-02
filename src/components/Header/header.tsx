@@ -5,14 +5,15 @@ import Logo from "../logo";
 import Burger from "./burger";
 import NavBar from "./navBar";
 import { HEADER_HEIGHT } from "@/constants/components/header";
-import { usePathname } from "@/i18n/routing";
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  isHomePage?: boolean;
+}
+
+const Header: React.FC<HeaderProps> = ({ isHomePage }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState(0);
-  // const [visible, setVisible] = useState(true);
-  const isHomePage = usePathname() === "/";
-  const [isTop, setIsTop] = useState(isHomePage); // Track if header is at the top of the hero
+  const [isTop, setIsTop] = useState(isHomePage);
   const [heroHeight, setHeroHeight] = useState(0); // Store hero section height
 
   useEffect(() => {
@@ -30,12 +31,11 @@ const Header: React.FC = () => {
 
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
-      // setVisible(position > scrollPosition); // Detect scroll direction (up or down)
       setPosition(scrollPosition);
+      setIsOpen(position === scrollPosition);
 
-      setIsOpen(position == scrollPosition);
       // Dynamically check if we're within the hero section or beyond
-      setIsTop(scrollPosition < heroHeight); // Use dynamic heroHeight instead of hardcoded value
+      setIsTop(scrollPosition < heroHeight);
     };
 
     window.addEventListener("scroll", handleScroll);

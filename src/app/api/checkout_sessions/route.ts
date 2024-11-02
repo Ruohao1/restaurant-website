@@ -6,26 +6,26 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: NextRequest) {
   try {
-    const referer = req.headers.get("referer");
-
-    if (!referer) {
-      throw new Error("Referer header is missing");
+    const origin = req.headers.get("referer");
+    if (!origin) {
+      throw new Error("Origin header is missing");
     }
 
-    const origin = new URL(referer).href;
-
-    const { cart } = await req.json();
+    // Parse the request body as JSON
+    const cart = await req.json();
 
     // Log the cart to ensure it has the correct structure and values
     console.log("Cart received for session creation:", cart);
 
-    const lineItems = cart.map((item: { id: string; quantity: number }) => {
-      console.log("Line item being processed:", item); // Debug log
-      return {
-        price: item.id,
-        quantity: item.quantity,
-      };
-    });
+    const lineItems = cart.map(
+      (item: { stripe_price_id: string; quantity: number }) => {
+        console.log("Line item being processed:", item); // Debug log
+        return {
+          price: item.stripe_price_id,
+          quantity: item.quantity,
+        };
+      }
+    );
 
     console.log("Line items for session creation:", lineItems); // Debug log
 

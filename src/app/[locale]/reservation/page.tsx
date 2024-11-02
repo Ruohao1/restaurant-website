@@ -103,10 +103,11 @@ const Reservation: React.FC<ReservationProps> = () => {
     console.log(response);
   }
 
-  const inset = { top: HEADER_HEIGHT };
-
   return (
-    <div className={`-mt-${inset.top} min-h-screen flex flex-col`}>
+    <div
+      className={`min-h-screen flex flex-col`}
+      style={{ marginTop: -HEADER_HEIGHT / 4 + "rem" }}
+    >
       <div className="flex flex-grow justify-center items-center bg-gray-100 py-10 px-6">
         <div className="w-full max-w-lg bg-white shadow-lg rounded-lg p-8">
           <h1 className="text-2xl font-bold mb-6 text-gray-800 text-center">

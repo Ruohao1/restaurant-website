@@ -45,7 +45,9 @@
         "design-by": "Design par"
     },
     "MenuPage": {
-        "link": "Menu"
+        "link": "Menu",
+        "title": "Notre Menu",
+        "link-to-cart": "Voir le panier"
     },
     "ReservationPage": {
         "link": "Réserver",
@@ -61,5 +63,19 @@
         "submit": "Réserver",
         "required-fields": "Ce champ est obligatoire",
         "required-either-fields": "Au moins un des champs est requis"
+    },
+    "CartPage": {
+        "link": "Panier",
+        "title": "Votre Panier",
+        "subtotal": "Sous-total",
+        "discount": "Réduction",
+        "total": "Total",
+        "empty-cart": "Votre panier est vide",
+        "checkout": "Payer",
+        "remove": "Retirer",
+        "clear": "Vider le panier",
+        "quantity": "Quantité",
+        "item": "Article",
+        "price": "Prix"
     }
 }
