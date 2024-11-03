@@ -2,7 +2,8 @@
 import { CartItem, useCart } from "@/context/CartContext";
 import { Button } from "@/components/ui/button";
 import { ShoppingCartIcon } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { getMenuComposition } from "@/lib/utils";
 
 interface AddToCartButtonProps {
   menu: {
@@ -29,15 +30,23 @@ interface AddToCartButtonProps {
 
 const AddToCartButton: React.FC<AddToCartButtonProps> = ({ menu }) => {
   const [loading, setLoading] = useState(false);
-  const { cart, addToCart } = useCart();
+  const { addToCart } = useCart();
 
   async function handleAddToCart() {
     setLoading(true);
+
+    const desc = getMenuComposition(menu);
+    console.log(
+      "Menu composition:",
+      desc + (menu.description ? "(" + menu.description + ")" : "")
+    );
 
     const item: CartItem = {
       id: menu.id,
       stripe_price_id: menu.stripe_price_id,
       name: menu.name,
+      description:
+        desc + (menu.description ? " (" + menu.description + ")" : ""),
       price: menu.price,
       quantity: 1,
     };
@@ -46,11 +55,6 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({ menu }) => {
 
     setLoading(false);
   }
-
-  // Observe changes in the cart
-  useEffect(() => {
-    console.log("Cart updated:", cart);
-  }, [cart]);
 
   return (
     <Button

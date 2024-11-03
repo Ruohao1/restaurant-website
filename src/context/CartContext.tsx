@@ -1,13 +1,19 @@
-// src/context/CartContext.tsx
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 // Define the shape of a cart item
 export interface CartItem {
   id: number;
   stripe_price_id?: string | null;
   name: string;
+  description: string;
   price: number;
   quantity: number;
 }
@@ -20,8 +26,6 @@ interface CartContextType {
   clearCart: () => void;
   increaseQuantity: (id: number) => void;
   decreaseQuantity: (id: number) => void;
-  getItemById: (id: number) => CartItem | undefined;
-  getItemCount: () => number;
   total: number;
 }
 
@@ -40,8 +44,29 @@ export const useCart = () => {
 // CartProvider component that provides the cart state
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
+  console.log("Cart state:", cart);
 
-  // Function to add an item to the cart
+  // Load cart from local storage on initial render
+  useEffect(() => {
+    const storedCart = localStorage.getItem("cart");
+    if (storedCart) {
+      console.log("Loading cart from local storage:", storedCart);
+      setCart(JSON.parse(storedCart));
+    }
+  }, []);
+
+  // Add a separate useEffect to log the updated cart state
+  useEffect(() => {
+    console.log("Cart state after loading from local storage:", cart);
+  }, [cart]);
+
+  // Save cart to local storage whenever it changes
+  useEffect(() => {
+    console.log("Saving cart to local storage:", cart);
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+
+  // Cart functions (add, remove, clear, etc.)
   const addToCart = (item: CartItem) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((cartItem) => cartItem.id === item.id);
@@ -56,17 +81,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  // Function to remove an item from the cart
   const removeFromCart = (id: number) => {
     setCart((prevCart) => prevCart.filter((item) => item.id !== id));
   };
 
-  // Function to clear the cart
   const clearCart = () => {
     setCart([]);
+    localStorage.removeItem("cart");
   };
 
-  // Function to increase the quantity of an item in the cart
   const increaseQuantity = (id: number) => {
     setCart((prevCart) =>
       prevCart.map((cartItem) =>
@@ -77,7 +100,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
-  // Function to decrease the quantity of an item in the cart
   const decreaseQuantity = (id: number) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((cartItem) => cartItem.id === id);
@@ -88,22 +110,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
             : cartItem
         );
       }
-      // Remove the item if quantity reaches zero
       return prevCart.filter((item) => item.id !== id);
     });
   };
 
-  // Function to get an item by its ID
-  const getItemById = (id: number) => {
-    return cart.find((item) => item.id === id);
-  };
-
-  // Function to get the total count of items in the cart
-  const getItemCount = () => {
-    return cart.reduce((count, item) => count + item.quantity, 0);
-  };
-
-  // Calculate the total price of the items in the cart
   const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   return (
@@ -115,8 +125,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         clearCart,
         increaseQuantity,
         decreaseQuantity,
-        getItemById,
-        getItemCount,
         total,
       }}
     >

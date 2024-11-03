@@ -1,25 +1,28 @@
-import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
+"use client";
 
-const testPage = async () => {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
+import { useEffect, useState } from "react";
 
-  // Attempt to get the user session
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
+function TestLocalStorage() {
+  const [data, setData] = useState("");
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
+  useEffect(() => {
+    const storedData = localStorage.getItem("testData");
+    if (storedData) {
+      setData(storedData);
+    }
+  }, []);
 
-  if (!user) {
-    return <div>Loading...</div>;
-  }
+  const handleSave = () => {
+    localStorage.setItem("testData", "Hello World!");
+    setData("Hello World!");
+  };
 
-  return <div>User: {JSON.stringify(user)}</div>;
-};
+  return (
+    <div>
+      <p>Stored Data: {data}</p>
+      <button onClick={handleSave}>Save to Local Storage</button>
+    </div>
+  );
+}
 
-export default testPage;
+export default TestLocalStorage;

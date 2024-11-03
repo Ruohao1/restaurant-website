@@ -1,43 +1,8 @@
+import { getMenuComposition } from "@/lib/utils";
 import { createClient } from "@/utils/supabase/server";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-
-async function getMenuComposition(menuId: number) {
-  const supabase = createClient();
-
-  const { data, error } = await supabase
-    .from("menu_food")
-    .select(
-      `food (
-          name
-          ),
-        food_types (
-          title
-        ),
-          quantity
-          `
-    )
-    .eq("menu_id", menuId);
-
-  if (error) {
-    console.error(error);
-    return "";
-  }
-
-  if (data.length === 0) {
-    return "";
-  }
-
-  const composition = data
-    .map((item) => {
-      const name = item.food ? item.food.name : item.food_types?.title;
-      return item.quantity + " " + name;
-    })
-    .reduce((acc, curr) => acc + ", " + curr);
-
-  return composition;
-}
 
 const createProductCatalog = async () => {
   const supabase = createClient();
@@ -66,7 +31,8 @@ const createProductCatalog = async () => {
 
       const description = async () => {
         const tmp = menu.description ? "\n" + menu.description : "";
-        const res = await getMenuComposition(menu.id);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const res = await getMenuComposition(menu as any);
         return res + tmp;
       };
 
