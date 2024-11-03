@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "@/i18n/routing";
 import Logo from "../logo";
 import Burger from "./burger";
 import NavBar from "./navBar";
@@ -10,15 +11,17 @@ interface HeaderProps {
   isHomePage?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ isHomePage }) => {
+const Header: React.FC<HeaderProps> = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState(0);
-  const [isTop, setIsTop] = useState(isHomePage);
+  const isHomePage = usePathname() === "/"; // Get the current pathname
+  const [isTop, setIsTop] = useState(isHomePage); // Check if we're at the top of the page
   const [heroHeight, setHeroHeight] = useState(0); // Store hero section height
 
   useEffect(() => {
     // Function to calculate hero section height
     const calculateHeroHeight = () => {
+      if (!isHomePage) setHeroHeight(0); // Only calculate on the home page
       const heroSection = document.querySelector("#hero");
       if (heroSection) {
         setHeroHeight(heroSection.clientHeight);
@@ -43,7 +46,13 @@ const Header: React.FC<HeaderProps> = ({ isHomePage }) => {
       window.removeEventListener("resize", calculateHeroHeight);
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [position, heroHeight]);
+  }, [position, heroHeight, isHomePage]);
+
+  useEffect(() => {
+    // Re-run logic when the route changes
+    setIsOpen(false); // Close the menu when the route changes
+    setIsTop(isHomePage); // Re-evaluate if it's the home page
+  }, [isHomePage]);
 
   return (
     <header
@@ -65,7 +74,7 @@ const Header: React.FC<HeaderProps> = ({ isHomePage }) => {
         />
 
         <nav className={`lg:flex lg:right-0 top-0 space-x-8 z-50`}>
-          <NavBar isOpen={isOpen} dark={isTop} />
+          <NavBar isOpen={isOpen} setIsOpen={setIsOpen} dark={isTop} />
         </nav>
         {/* Burger icon for small screens */}
         <div className="lg:hidden relative right-0 -top-1/4">

@@ -12,7 +12,7 @@ import { CartProvider } from "@/context/CartContext";
 
 export default async function RootLayout({
   children,
-  params: { locale, slug },
+  params: { locale },
 }: {
   children: React.ReactNode;
   params: { locale: string; slug?: string };
@@ -25,16 +25,12 @@ export default async function RootLayout({
 
   // Providing all messages to the client
   const messages = await getMessages();
-
-  // Check if the current path is the Home page based on `slug`
-  const isHomePage = !slug; // Assuming `slug` is undefined for the Home page
-
   return (
     <html lang={locale}>
       <body>
         <NextIntlClientProvider messages={messages}>
           <CartProvider>
-            <Header isHomePage={isHomePage} />
+            <Header />
             <div className={"min-h-screen"}>
               <div style={{ marginTop: HEADER_HEIGHT / 4 + "rem" }}>
                 {children}

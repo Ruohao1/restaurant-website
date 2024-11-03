@@ -3,15 +3,27 @@
 import config from "@/constants/config";
 import Logo from "../logo";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/routing";
+import { useRouter } from "@/i18n/routing";
+import { Dispatch, SetStateAction } from "react";
+import { usePathname } from "next/navigation";
 
 interface NavBarProps {
   isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
   dark?: boolean;
 }
 
-const NavBar: React.FC<NavBarProps> = ({ isOpen, dark }) => {
+const NavBar: React.FC<NavBarProps> = ({ isOpen, setIsOpen, dark }) => {
   const t = useTranslations();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleClick = (path: string) => {
+    setIsOpen(false);
+    if (pathname !== path) {
+      router.push(path);
+    }
+  };
 
   return (
     <nav
@@ -35,14 +47,20 @@ const NavBar: React.FC<NavBarProps> = ({ isOpen, dark }) => {
             }`}
           >
             <li>
-              <Link href={`/menu`} className="hover:text-blue-600">
+              <span
+                onClick={() => handleClick("/menu")}
+                className="hover:text-blue-600 cursor-pointer"
+              >
                 {t("MenuPage.link")}
-              </Link>
+              </span>
             </li>
             <li>
-              <Link href={`/reservation`} className="hover:text-blue-600">
+              <span
+                onClick={() => handleClick("/reservation")}
+                className="hover:text-blue-600 cursor-pointer"
+              >
                 {t("ReservationPage.link")}
-              </Link>
+              </span>
             </li>
           </ul>
 
