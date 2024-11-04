@@ -3,9 +3,10 @@
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { MinusIcon, PlusIcon, TrashIcon } from "@heroicons/react/solid";
 import GoToMenuButton from "@/components/Navigation/GoToMenuButton";
+import { Link } from "@/i18n/routing";
 
 const CartPage: React.FC = () => {
   const t = useTranslations("CartPage");
@@ -17,24 +18,6 @@ const CartPage: React.FC = () => {
     increaseQuantity: addOneToCart,
     decreaseQuantity: removeOneFromCart,
   } = useCart();
-  const [loading, setLoading] = useState(false);
-
-  const handleCheckout = async () => {
-    setLoading(true);
-
-    const response = await fetch("/api/checkout_sessions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(cart),
-    });
-
-    setLoading(false);
-
-    const data = await response.json();
-    window.location.href = data.url;
-  };
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
@@ -110,10 +93,11 @@ const CartPage: React.FC = () => {
               {t("clear")}
             </button>
             <Button
-              onClick={handleCheckout}
+              // onClick={handleCheckout}
               className="px-6 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition duration-200"
             >
-              {loading ? t("loading") : t("checkout")}
+              {/* {loading ? t("loading") : t("checkout")} */}
+              <Link href="/checkout">{t("command")}</Link>
             </Button>
           </div>
         </div>

@@ -44,25 +44,16 @@ export const useCart = () => {
 // CartProvider component that provides the cart state
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
-  console.log("Cart state:", cart);
-
   // Load cart from local storage on initial render
   useEffect(() => {
     const storedCart = localStorage.getItem("cart");
     if (storedCart) {
-      console.log("Loading cart from local storage:", storedCart);
       setCart(JSON.parse(storedCart));
     }
   }, []);
 
-  // Add a separate useEffect to log the updated cart state
-  useEffect(() => {
-    console.log("Cart state after loading from local storage:", cart);
-  }, [cart]);
-
   // Save cart to local storage whenever it changes
   useEffect(() => {
-    console.log("Saving cart to local storage:", cart);
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 

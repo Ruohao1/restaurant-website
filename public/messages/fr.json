@@ -71,11 +71,37 @@
         "discount": "Réduction",
         "total": "Total",
         "empty-cart": "Votre panier est vide",
-        "checkout": "Payer",
         "remove": "Retirer",
         "clear": "Vider le panier",
         "quantity": "Quantité",
         "item": "Article",
-        "price": "Prix"
+        "price": "Prix",
+        "command": "Commander",
+        "loading": "Chargement..."
+    },
+    "CheckoutPage": {
+        "steps": {
+            "orderType": "Type de commande",
+            "coordinates": "Coordonnées",
+            "recap": "Récapitulatif",
+            "payment": "Paiement",
+            "confirmation": "Confirmation"
+        },
+        "OrderType": {
+            "title": "Type de commande",
+            "takeaway": "Plats à emporter",
+            "delivery": "Livraison"
+        },
+        "Delivery": {
+            "name": "Nom",
+            "phone": "Téléphone",
+            "email": "Email",
+            "address": "Adresse",
+            "city": "Ville",
+            "postalCode": "Code postal",
+            "submit": "Valider"
+        },
+        "takeaway": "Plats à emporter",
+        "delivery": "Livraison"
     }
 }
