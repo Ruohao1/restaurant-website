@@ -1,16 +1,28 @@
 import { Button } from "@/components/ui/button";
+import { useCheckout } from "@/context/CheckoutContext";
+import { usePathname } from "@/i18n/routing";
 
-interface OrderTypeStepProps {
-  orderType?: "delivery" | "pickup";
-  setOrderType: (type: "delivery" | "pickup") => void;
-  nextStep: () => void;
-}
+const OrderType: React.FC = () => {
+  const { step, orderType, setOrderType, nextStep } = useCheckout();
 
-const OrderType: React.FC<OrderTypeStepProps> = ({
-  orderType,
-  setOrderType,
-  nextStep,
-}) => {
+  const PaymentSuccess: React.FC = () => {
+    const pathname = usePathname();
+    console.log(pathname);
+
+    return <Button>payment success</Button>;
+    // return (
+    //   <Button
+    //     onClick={() => {
+    //       window.location.href = "/checkout?step=payment?success=true";
+    //     }}
+    //   >
+    //     payment success
+    //   </Button>
+    // );
+  };
+
+  if (step !== 0) return null;
+
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">Select Order Type</h2>
@@ -26,9 +38,9 @@ const OrderType: React.FC<OrderTypeStepProps> = ({
           Delivery
         </Button>
         <Button
-          variant={orderType === "pickup" ? "default" : "outline"}
+          variant={orderType === "takeaway" ? "default" : "outline"}
           onClick={() => {
-            setOrderType("pickup");
+            setOrderType("takeaway");
             nextStep();
           }}
           className="w-full"
@@ -36,6 +48,7 @@ const OrderType: React.FC<OrderTypeStepProps> = ({
           Pick-Up
         </Button>
       </div>
+      <PaymentSuccess />
     </div>
   );
 };

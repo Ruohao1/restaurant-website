@@ -6,6 +6,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: NextRequest) {
   try {
+    console.log("req.headers", req.headers);
     const origin = req.headers.get("referer");
     if (!origin) {
       throw new Error("Origin header is missing");
@@ -14,12 +15,8 @@ export async function POST(req: NextRequest) {
     // Parse the request body as JSON
     const cart = await req.json();
 
-    // Log the cart to ensure it has the correct structure and values
-    console.log("Cart received for session creation:", cart);
-
     const lineItems = cart.map(
       (item: { stripe_price_id: string; quantity: number }) => {
-        console.log("Line item being processed:", item); // Debug log
         return {
           price: item.stripe_price_id,
           quantity: item.quantity,
@@ -27,14 +24,14 @@ export async function POST(req: NextRequest) {
       }
     );
 
-    console.log("Line items for session creation:", lineItems); // Debug log
-
     const session = await stripe.checkout.sessions.create({
       line_items: lineItems,
       mode: "payment",
       success_url: `${origin}/?success=true`,
       cancel_url: `${origin}/?canceled=true`,
     });
+
+    console.log("Checkout session created:", session);
 
     return NextResponse.json({ url: session.url });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

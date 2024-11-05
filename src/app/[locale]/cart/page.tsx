@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import { useTranslations } from "next-intl";
-import { useEffect } from "react";
 import { MinusIcon, PlusIcon, TrashIcon } from "@heroicons/react/solid";
 import GoToMenuButton from "@/components/Navigation/GoToMenuButton";
 import { Link } from "@/i18n/routing";
@@ -18,17 +17,6 @@ const CartPage: React.FC = () => {
     increaseQuantity: addOneToCart,
     decreaseQuantity: removeOneFromCart,
   } = useCart();
-
-  useEffect(() => {
-    const query = new URLSearchParams(window.location.search);
-    if (query.get("success")) {
-      console.log("Payment successful. Clearing cart...");
-      clearCart(); // Only clear on successful payment
-    }
-    if (query.get("canceled")) {
-      console.log("Payment canceled. Cart remains unchanged.");
-    }
-  }, [clearCart]);
 
   return (
     <div className="container mx-auto p-4 md:p-8">

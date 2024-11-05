@@ -4,13 +4,13 @@ import * as React from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+import { useCheckout } from "@/context/CheckoutContext";
 
 const steps: { [key: string]: number } = {
   orderType: 0,
@@ -23,13 +23,9 @@ const steps: { [key: string]: number } = {
 // Define reverse mapping to get step names from indices
 const stepNames = Object.keys(steps);
 
-interface CheckoutBreadcrumbProps {
-  currentStep: number;
-}
+const CheckoutBreadcrumb: React.FC = () => {
+  const { step: currentStep, setStep } = useCheckout();
 
-const CheckoutBreadcrumb: React.FC<CheckoutBreadcrumbProps> = ({
-  currentStep,
-}) => {
   const [isMounted, setIsMounted] = useState(false);
   const t = useTranslations("CheckoutPage.steps");
 
@@ -49,9 +45,9 @@ const CheckoutBreadcrumb: React.FC<CheckoutBreadcrumbProps> = ({
               {index === currentStep ? (
                 <BreadcrumbPage>{t(step)}</BreadcrumbPage>
               ) : (
-                <BreadcrumbLink href={`/checkout?step=${step}`}>
+                <span className="cursor-pointer" onClick={() => setStep(index)}>
                   {t(step)}
-                </BreadcrumbLink>
+                </span>
               )}
               {index < stepNames.length - 1 && <BreadcrumbSeparator />}
             </BreadcrumbItem>

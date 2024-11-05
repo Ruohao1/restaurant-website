@@ -1,6 +1,8 @@
 import OrderType from "./OrderType";
-import Coordinates from "./Coordinates";
+import Details from "./Details";
 import Recap from "./Recap";
 import CheckoutBreadcrumb from "./Breadcrumb";
+import Payment from "./Payment";
+import Confirmation from "./Confirmation";
 
-export { Coordinates, OrderType, Recap, CheckoutBreadcrumb };
+export { Details, OrderType, Recap, CheckoutBreadcrumb, Payment, Confirmation };

@@ -1,21 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useCheckout } from "@/context/CheckoutContext";
 
-interface CoordinatesProps {
-  orderType?: "delivery" | "pickup";
-  coordinates: object;
-  setCoordinates: (coords: object) => void;
-  nextStep: () => void;
-  prevStep: () => void;
-}
+const Details: React.FC = () => {
+  const { step, orderType, details, setDetails, nextStep, prevStep } =
+    useCheckout();
 
-const Coordinates: React.FC<CoordinatesProps> = ({
-  orderType,
-  coordinates,
-  setCoordinates,
-  nextStep,
-  prevStep,
-}) => {
+  if (step !== 1) return null;
+
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">
@@ -25,9 +17,7 @@ const Coordinates: React.FC<CoordinatesProps> = ({
       </h2>
       <Input
         placeholder="Enter your address or pick-up details"
-        onChange={(e) =>
-          setCoordinates({ ...coordinates, address: e.target.value })
-        }
+        onChange={(e) => setDetails({ ...details!, address: e.target.value })}
       />
       <div className="flex justify-between mt-4">
         <Button variant="outline" onClick={prevStep}>
@@ -41,4 +31,4 @@ const Coordinates: React.FC<CoordinatesProps> = ({
   );
 };
 
-export default Coordinates;
+export default Details;
